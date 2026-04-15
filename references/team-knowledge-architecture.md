@@ -4,17 +4,51 @@
 
 ## 核心理念
 
-**团队 = 能力覆盖 + 角色 + 知识库 + 记忆系统 + 读取规则 + 验证机制**
+**团队 = 摸底评估 + 目标导向蒸馏 + 能力覆盖 + 能力单元 + 知识库 + 记忆系统 + 读取规则 + 验证机制**
 
 不是生成一群会说话的空壳，而是生成一支带专业知识、能长期陪用户工作的 AI 团队。
+
+团队里的“成员”是广义的能力单元：可以是专家型角色，也可以是评估器、题库、数据库、流程节点、监督器、研究代理或工具封装。不要求每个单元都像一个真人说话，但必须有明确输入、处理、输出和记忆责任。
 
 ---
 
 ## 一、四层团队架构
 
-### 第零层：团队控制面 (`references/capability-coverage.md` + `references/team-contract.md`)
+### 第零层：团队控制面 (`references/distillation-plan.md` + `references/capability-coverage.md` + `references/team-contract.md`)
 
 保存"这个团队为什么这样分工，以及怎么协作"。
+
+#### `references/distillation-plan.md`
+
+目标导向蒸馏计划。它回答：
+- 这个目标需要蒸馏哪些领域标准？
+- 哪些组织模式值得参考？
+- 每个能力单元要蒸馏哪些方法、流程、题型、案例或工具规则？
+- 哪些信息来自网络，哪些来自用户资料，哪些来自模型通用知识？
+- 哪些结论有证据，哪些只是推断？
+
+标准结构：
+
+```markdown
+# Distillation Plan
+
+## 目标
+[用户目标和周期]
+
+## 蒸馏对象
+| 对象 | 目的 | 来源策略 | 输出文件 |
+|------|------|----------|----------|
+| 领域标准 | 判断好坏 | 官方/权威资料 | `references/official-standards.md` |
+| 组织模式 | 决定分工 | 成熟体系/案例 | `references/team-contract.md` |
+| 能力方法 | 让单元会做事 | 方法论/题型/工具 | `members/[unit]/references/[x].md` |
+| 摸底方法 | 知道当前状态 | 测试/问卷/样本 | `shared/baseline.md` |
+| 记忆结构 | 长期追踪变化 | 指标/弱点/风险 | `shared/*.md` |
+
+## 证据分级
+- 一手/官方：
+- 权威二手：
+- 推断：
+```
 
 #### `references/capability-coverage.md`
 
@@ -22,6 +56,7 @@
 - 这个领域有哪些必备能力？
 - 哪些是辅助能力？
 - 每个能力由哪个成员负责？
+- 这个负责人是人、工具、数据库、流程节点，还是评估器？
 - 对应的专属知识文件在哪里？
 - 对应的长期记忆字段或文件在哪里？
 
@@ -30,15 +65,15 @@
 ```markdown
 # Capability Coverage
 
-| 能力模块 | 必备/辅助 | 负责人 | 成员路径 | 知识文件 | 记忆目标 | 状态 |
-|---------|----------|--------|---------|----------|----------|------|
-| [能力] | 必备 | [角色] | `members/[role]/` | `members/[role]/references/[x].md` | `shared/progress.md` | 已覆盖 |
+| 能力模块 | 必备/辅助 | 单元形态 | 负责人 | 成员路径 | 知识文件 | 记忆目标 | 状态 |
+|---------|----------|----------|--------|----------|----------|----------|------|
+| [能力] | 必备 | 评估器/教练/数据库/流程 | [单元名] | `members/[unit]/` | `members/[unit]/references/[x].md` | `shared/progress.md` | 已覆盖 |
 ```
 
 #### `references/team-contract.md`
 
 团队运行契约。它回答：
-- 谁负责什么输入？
+- 谁或什么单元负责什么输入？
 - 谁输出什么结果？
 - 用户意图如何路由？
 - 每个角色完成任务后写哪些记忆？
@@ -65,7 +100,7 @@
 [规则]
 ```
 
-**原则**：协调器、成员、知识索引、质量检查都以这两个文件为准。它们不是展示文档，是团队的结构账本。
+**原则**：协调器、成员、知识索引、质量检查都以这些控制面文件为准。它们不是展示文档，是团队的结构账本。
 
 ---
 
@@ -141,6 +176,7 @@
 ├── SKILL.md                              # 团队协调器（入口）
 ├── README.md                             # 团队说明
 ├── references/                           # 团队共享知识库
+│   ├── distillation-plan.md              # 目标导向蒸馏计划
 │   ├── knowledge-index.md                # 知识索引：什么问题读什么文件
 │   ├── capability-coverage.md            # 能力覆盖账本：必备能力是否有负责人
 │   ├── team-contract.md                  # 团队契约：路由、交接、记忆写入
@@ -165,6 +201,7 @@
 │   └── ...
 ├── shared/                               # 用户状态和团队记忆（V2 长期记忆）
 │   ├── user-profile.md                   # 用户档案（或 pet-profile.md 等）
+│   ├── baseline.md                       # 摸底评估结果（长期团队推荐/必备）
 │   ├── progress.md                       # 练习记录和分数趋势
 │   ├── weak-points.md                    # 弱点状态追踪（含状态机）
 │   ├── session-log.md                    # 会话摘要（保留最近 7 天）
@@ -179,14 +216,71 @@
 
 ---
 
-## 三、能力覆盖账本 (capability-coverage.md)
+## 三、目标导向蒸馏 (distillation-plan.md)
+
+上帝的蒸馏对象不是只有“人”。团队生成时要蒸馏的是达成目标所需的证据和操作系统。
+
+### 蒸馏对象
+
+| 对象 | 蒸馏内容 | 常见来源 |
+|------|----------|----------|
+| 领域标准 | 什么叫好、如何评分、有哪些硬规则 | 官方文档、考试大纲、行业规范 |
+| 组织结构 | 需要哪些能力单元、如何协作 | 成熟课程体系、项目流程、团队案例 |
+| 能力方法 | 每个单元具体怎么做 | 专家文章、教材、案例、工具手册 |
+| 摸底方法 | 如何判断当前状态 | 模拟题、问卷、样本分析、指标体系 |
+| 记忆结构 | 哪些数据要长期追踪 | 用户周期、目标指标、风险和弱点 |
+
+### 输出要求
+
+- 所有团队必须生成 `references/distillation-plan.md`。
+- 如果使用网络资料，必须写入来源策略和可信度。
+- 如果只是模型推断，必须标注为推断，不能伪装成标准。
+- 每个能力单元的专属知识文件，都要能回溯到蒸馏计划。
+
+---
+
+## 四、摸底评估 (shared/baseline.md)
+
+长期团队必须知道服务对象的起点。考试团队摸底用户能力，健身团队摸底身体状态，宠物团队摸底宠物状态，产品团队摸底项目状态。
+
+### 标准格式
+
+```markdown
+# Baseline
+
+## 目标
+[目标、周期、成功标准]
+
+## 当前状态
+[当前分数/身体指标/项目阶段/对象状态]
+
+## 约束条件
+[时间、预算、工具、风险、不可做事项]
+
+## 初始弱点/风险
+| 项目 | 证据 | 严重程度 | 下一步 |
+|------|------|----------|--------|
+
+## 第一轮评估计划
+[如何在第一次任务中进一步确认]
+```
+
+### 规则
+
+- `baseline.md` 是事实，不是鼓励文案。
+- 不确定的信息标注"待评估"。
+- 成员后续写 `progress.md` 和 `weak-points.md` 时，要引用 baseline 作为起点。
+
+---
+
+## 五、能力覆盖账本 (capability-coverage.md)
 
 能力覆盖账本是防止"看起来完整，其实漏角色"的核心文件。
 
 ### 生成规则
 
 1. 先列能力，再列角色。不要先写角色再倒推能力。
-2. 每个必备能力必须有负责人、成员路径、知识文件、记忆目标。
+2. 每个必备能力必须有单元形态、负责人、成员路径、知识文件、记忆目标。
 3. 辅助能力可以由核心角色兼任，但必须写明。
 4. 若用户明确不需要某个必备能力，状态写为"用户排除"，并记录原因。
 5. 质量检查脚本必须优先读取此文件。
@@ -194,16 +288,16 @@
 ### 示例
 
 ```markdown
-| 能力模块 | 必备/辅助 | 负责人 | 成员路径 | 知识文件 | 记忆目标 | 状态 |
+| 能力模块 | 必备/辅助 | 单元形态 | 负责人 | 成员路径 | 知识文件 | 记忆目标 | 状态 |
 |---------|----------|--------|---------|----------|----------|------|
-| Listening | 必备 | listening-trainer | `members/listening-trainer/` | `members/listening-trainer/references/listening-strategies.md` | `shared/progress.md`, `shared/weak-points.md` | 已覆盖 |
-| Reading | 必备 | reading-coach | `members/reading-coach/` | `members/reading-coach/references/reading-strategies.md` | `shared/progress.md`, `shared/weak-points.md` | 已覆盖 |
-| Vocabulary | 辅助 | vocabulary-supervisor | `members/vocabulary-supervisor/` | `members/vocabulary-supervisor/references/topic-vocabulary.md` | `shared/progress.md` | 已覆盖 |
+| Listening | 必备 | 教练 | listening-trainer | `members/listening-trainer/` | `members/listening-trainer/references/listening-strategies.md` | `shared/progress.md`, `shared/weak-points.md` | 已覆盖 |
+| Reading | 必备 | 教练 | reading-coach | `members/reading-coach/` | `members/reading-coach/references/reading-strategies.md` | `shared/progress.md`, `shared/weak-points.md` | 已覆盖 |
+| Mock Test | 必备 | 评估器 | mock-test-evaluator | `members/mock-test-evaluator/` | `members/mock-test-evaluator/references/scoring.md` | `shared/progress.md`, `shared/baseline.md` | 已覆盖 |
 ```
 
 ---
 
-## 四、知识索引 (knowledge-index.md)
+## 六、知识索引 (knowledge-index.md)
 
 知识索引是团队的"导航系统"，告诉模型什么问题该读哪个文件。
 
@@ -247,7 +341,7 @@
 
 ---
 
-## 五、知识读取规则
+## 七、知识读取规则
 
 ### 协调器的读取规则
 
@@ -300,14 +394,15 @@
 
 ---
 
-## 六、团队契约与记忆写入
+## 八、团队契约与记忆写入
 
 ### 角色责任契约
 
-每个成员都必须有明确责任边界：
+每个能力单元都必须有明确责任边界：
 
 | 字段 | 说明 |
 |------|------|
+| 单元形态 | 人/工具/数据库/流程/评估器/监督器 |
 | 负责能力 | 对应 `capability-coverage.md` 的能力模块 |
 | 输入 | 用户或协调器会交给它什么 |
 | 输出 | 它必须产出什么结构化结果 |
@@ -320,6 +415,7 @@
 
 | 文件 | 谁写 | 什么时候写 |
 |------|------|------------|
+| `shared/baseline.md` | 协调器/评估类单元 | 首次摸底、阶段性复测 |
 | `shared/user-profile.md` | 协调器/规划类角色 | 首次评估、目标变化、水平显著变化 |
 | `shared/progress.md` | 所有训练/评估类成员 | 每次训练、评分、诊断后 |
 | `shared/weak-points.md` | 发现弱点的成员 + 协调器复核 | 新弱点、复查、复发、稳定 |
@@ -328,7 +424,7 @@
 | `shared/monthly-summary.md` | 协调器/规划类角色 | 每月总结 |
 | `shared/archive/` | 协调器 | 日志超过保留窗口 |
 
-**关键规则**：成员不能只给建议，不写记忆。凡是训练、评分、诊断、计划调整，都必须至少追加 `shared/session-log.md`。
+**关键规则**：能力单元不能只给建议，不写记忆。凡是训练、评分、诊断、计划调整，都必须至少追加 `shared/session-log.md`。
 
 ---
 

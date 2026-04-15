@@ -16,10 +16,11 @@
 
 ## 团队控制面
 
-这个团队不只靠 README 描述结构，而是有两份可被质量检查脚本读取的结构账本：
+这个团队不只靠 README 描述结构，而是有三份可被质量检查脚本读取的结构账本：
 
 | 文件 | 用途 |
 |------|------|
+| `references/distillation-plan.md` | 记录本团队从哪些标准、方法、摸底方式和记忆结构中蒸馏而来 |
 | `references/capability-coverage.md` | 记录 Listening / Reading / Writing / Speaking 等能力是否都有负责人、知识文件和记忆目标 |
 | `references/team-contract.md` | 记录角色责任、路由契约、记忆写入契约和冲突处理规则 |
 
@@ -199,6 +200,7 @@ ielts-team/
 ├── SKILL.md                              # 协调器（入口）
 ├── README.md                             # 本文件
 ├── references/                           # 团队共享知识库
+│   ├── distillation-plan.md              #   目标导向蒸馏计划
 │   ├── capability-coverage.md            #   能力覆盖账本
 │   ├── team-contract.md                  #   团队契约
 │   ├── knowledge-index.md                #   知识索引（路由表）
@@ -225,6 +227,7 @@ ielts-team/
 │       ├── SKILL.md                      #   学习规划师
 │       └── references/planning-strategies.md # 备考策略
 └── shared/                               # 用户状态和团队记忆
+    ├── baseline.md                       #   初始摸底评估
     ├── user-profile.md                   #   用户档案模板
     ├── progress.md                       #   进度追踪模板
     ├── weak-points.md                    #   弱点画像模板

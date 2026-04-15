@@ -2,11 +2,11 @@
 
 # 上帝 · 造物术
 
-**把一个模糊目标，推演成一支能长期协作的 AI 组织。**
+**把一个模糊目标，推演成一套会摸底、会蒸馏、会协作、会记忆的 AI 组织系统。**
 
-输入一句需求，上帝会为你设计团队结构、角色分工、专业知识库、个人长期记忆、每日进度记录、周/月复盘和质量检查规则。
+输入一句需求，上帝会先摸清当前状态，再蒸馏领域标准、组织结构、能力方法和记忆规则，最后生成团队结构、能力单元、专业知识库、个人长期记忆、每日记录、周/月复盘和质量检查。
 
-它不是让 AI 扮演一个助手，而是让 AI 先搭建一个能持续工作的系统。
+它不是让 AI 扮演一个助手，也不是把一群“人设”拼在一起，而是让 AI 先搭建一个能持续工作的目标系统。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
@@ -18,7 +18,7 @@
 
 ## 一句话说明
 
-上帝造物术是一个 **AI 组织生成器**。
+上帝造物术是一个 **AI 组织生成器**，也是一个 **目标导向蒸馏器**。
 
 你告诉它一个目标：
 
@@ -29,14 +29,17 @@
 我要做一个内容创作流水线，每周稳定产出 5 条视频。
 ```
 
-它不会只写一个“你是某某专家”的 Prompt，而是推演出：
+它不会只写一个“你是某某专家”的 Prompt，也不会强行把每个能力都做成人设。它会推演出：
 
 ```text
 这个目标需要哪些能力？
-哪些能力必须有专人负责？
-每个人需要哪些专业知识？
+当前用户/对象/项目的起点在哪里？
+哪些能力必须有能力单元负责？
+哪些单元是人，哪些是工具、流程、数据库、评估器？
+每个能力单元需要哪些专业知识？
+哪些知识要从网络/官方资料/用户材料里蒸馏？
 哪些数据属于团队共享？
-哪些数据属于某个角色专属？
+哪些数据属于某个单元专属？
 哪些数据属于用户长期记忆？
 每天做完任务后写入哪里？
 一周后谁复盘？
@@ -56,6 +59,7 @@
 your-team/
 ├── SKILL.md                         # 协调器：团队入口和总调度
 ├── references/                      # 团队控制面 + 共享知识库
+│   ├── distillation-plan.md         # 蒸馏计划：从哪里提取标准、流程、方法
 │   ├── capability-coverage.md       # 能力覆盖账本：缺谁、谁负责、一眼可查
 │   ├── team-contract.md             # 团队契约：谁接什么活、写什么记忆
 │   ├── knowledge-index.md           # 知识索引：什么任务读什么文件
@@ -71,6 +75,7 @@ your-team/
 │   │   └── references/
 │   └── ...
 └── shared/                          # 用户长期记忆和动态状态
+    ├── baseline.md                  # 初始摸底：目标、起点、约束、风险
     ├── user-profile.md              # 你的目标、水平、偏好、约束
     ├── progress.md                  # 每次训练/任务/评估记录
     ├── weak-points.md               # 弱点状态机
@@ -92,17 +97,17 @@ your-team/
 
 | 数据层 | 存放位置 | 里面是什么 | 谁读取 | 谁写入 |
 |---|---|---|---|---|
-| **团队控制面** | `references/capability-coverage.md`, `references/team-contract.md` | 团队结构、能力覆盖、路由、记忆写入规则 | 协调器、质量检查、所有成员按需 | 生成团队时写入，升级团队时修改 |
+| **团队控制面** | `references/distillation-plan.md`, `references/capability-coverage.md`, `references/team-contract.md` | 蒸馏计划、团队结构、能力覆盖、路由、记忆写入规则 | 协调器、质量检查、所有成员按需 | 生成团队时写入，升级团队时修改 |
 | **团队共享知识库** | `references/` | 官方标准、领域总览、通用方法论、常见错误 | 所有成员按任务读取 | 生成/更新团队时修改，日常使用不改 |
-| **成员专属知识库** | `members/[role]/references/` | 某个角色自己的评分细则、题型策略、案例库 | 对应成员为主，协调器按需读取 | 生成/更新该成员时修改 |
-| **用户长期记忆库** | `shared/` | 用户目标、历史记录、弱点、复盘、成长轨迹 | 所有成员按需读取 | 日常使用中持续写入 |
+| **能力单元专属知识库** | `members/[unit]/references/` | 某个角色/工具/流程/评估器自己的评分细则、题型策略、案例库 | 对应单元为主，协调器按需读取 | 生成/更新该单元时修改 |
+| **用户长期记忆库** | `shared/` | 摸底结果、用户目标、历史记录、弱点、复盘、成长轨迹 | 所有成员按需读取 | 日常使用中持续写入 |
 
 最重要的边界：
 
 ```text
 references/ 是专业知识，不记录用户隐私和日常变化。
-members/*/references/ 是角色专业知识，不记录用户日常变化。
-shared/ 是用户记忆，记录这个用户、这个目标、这段周期的事实。
+members/*/references/ 是能力单元专业知识，不记录用户日常变化。
+shared/ 是用户记忆，记录这个用户/对象/项目、这个目标、这段周期的事实。
 ```
 
 所以，“不同人的数据库”在当前版本里推荐这样隔离：
@@ -127,20 +132,27 @@ users/{user_id}/teams/{team_id}/memory
 
 ## 组织是怎么从一句话长出来的
 
-上帝不是先想“我要生成几个角色”，而是先想“这个目标需要哪些能力”。
+上帝不是先想“我要生成几个角色”，而是先想“这个目标需要哪些能力，当前起点在哪里，需要蒸馏哪些证据”。
 
 ```mermaid
 flowchart TD
     A["用户输入目标"] --> B["识别领域类型"]
-    B --> C["提出 1-2 个关键问题"]
-    C --> D["列出必备能力和辅助能力"]
-    D --> E["生成能力覆盖账本"]
-    E --> F["为每个能力分配角色"]
-    F --> G["设计团队契约"]
-    G --> H["蒸馏共享知识和成员专属知识"]
-    H --> I["生成长期记忆结构"]
-    I --> J["质量检查"]
-    J --> K["交付可运行团队"]
+    B --> C["设计摸底评估"]
+    C --> D["制定目标导向蒸馏计划"]
+    D --> E["列出必备能力和辅助能力"]
+    E --> F["生成能力覆盖账本"]
+    F --> G["分配能力单元"]
+    G --> H["设计团队契约"]
+    H --> I["蒸馏共享知识和单元专属知识"]
+    I --> J["生成长期记忆结构"]
+    J --> K["质量检查"]
+    K --> L["交付可运行团队"]
+```
+
+如果你的阅读器不显示 Mermaid 图，可以把它理解成：
+
+```text
+目标输入 → 摸底评估 → 蒸馏计划 → 能力覆盖 → 能力单元 → 团队契约 → 知识库 → 记忆系统 → 质量检查 → 交付
 ```
 
 举例：你说「我要生成一个高数备考团队，三个月后考试」。
@@ -153,27 +165,30 @@ flowchart TD
 核心任务：理解概念 + 掌握题型 + 纠错复盘 + 做套卷 + 管理节奏
 评分方式：题目对错、步骤得分、速度、稳定性
 长期记忆：错题类型、薄弱章节、每日练习、周测成绩、复盘策略
+蒸馏对象：考试大纲、题型分类、错因体系、模拟测试方式、复习节奏
 ```
 
 然后能力覆盖账本可能长这样：
 
-| 能力模块 | 必备/辅助 | 负责人 | 知识文件 | 记忆目标 |
-|---|---|---|---|---|
-| 概念讲解 | 必备 | 概念教练 | `members/concept-coach/references/concepts.md` | `shared/progress.md` |
-| 题型训练 | 必备 | 题型教练 | `members/problem-coach/references/problem-types.md` | `shared/problem-log.md` |
-| 错题复盘 | 必备 | 错题分析师 | `members/error-analyst/references/error-patterns.md` | `shared/weak-points.md` |
-| 计划管理 | 必备 | 学习规划师 | `members/study-planner/references/planning.md` | `shared/weekly-reviews.md` |
-| 心态/执行 | 辅助 | 执行监督 | `members/accountability-coach/references/habits.md` | `shared/session-log.md` |
+| 能力模块 | 必备/辅助 | 单元形态 | 负责人 | 知识文件 | 记忆目标 |
+|---|---|---|---|---|---|
+| 摸底测试 | 必备 | 评估器 | baseline-evaluator | `members/baseline-evaluator/references/assessment.md` | `shared/baseline.md` |
+| 概念讲解 | 必备 | 教练 | concept-coach | `members/concept-coach/references/concepts.md` | `shared/progress.md` |
+| 题型训练 | 必备 | 训练流程 | problem-trainer | `members/problem-trainer/references/problem-types.md` | `shared/problem-log.md` |
+| 错题复盘 | 必备 | 分析器 | error-analyst | `members/error-analyst/references/error-patterns.md` | `shared/weak-points.md` |
+| 计划管理 | 必备 | 规划器 | study-planner | `members/study-planner/references/planning.md` | `shared/weekly-reviews.md` |
+| 心态/执行 | 辅助 | 监督器 | accountability-monitor | `members/accountability-monitor/references/habits.md` | `shared/session-log.md` |
 
 生成的团队可能是：
 
 ```text
 高数协调器
+├── 摸底评估器     ← 先测当前水平，生成 baseline
 ├── 概念教练       ← 讲清极限、导数、积分、级数等概念
-├── 题型教练       ← 按题型训练：计算、证明、应用、综合题
-├── 错题分析师     ← 把错题归因成知识缺口、步骤问题、计算粗心、时间问题
-├── 套卷教练       ← 负责计时训练、分数估计、考试策略
-└── 学习规划师     ← 每日任务、周复盘、三个月节奏调整
+├── 题型训练流程   ← 按题型训练：计算、证明、应用、综合题
+├── 错题分析器     ← 把错题归因成知识缺口、步骤问题、计算粗心、时间问题
+├── 套卷评估器     ← 负责计时训练、分数估计、考试策略
+└── 学习规划器     ← 每日任务、周复盘、三个月节奏调整
 ```
 
 这和雅思团队完全不同，因为能力模块不同、评分方式不同、记忆文件也不同。
@@ -337,6 +352,8 @@ flowchart LR
 
 | 创新点 | 说明 |
 |---|---|
+| **先摸底再造物** | 不直接生成团队，先评估用户/对象/项目当前状态 |
+| **目标导向蒸馏** | 蒸馏的不是人设，而是领域标准、组织结构、能力方法、摸底方式和记忆结构 |
 | **从需求推演组织** | 不是套固定模板，而是先分析目标需要哪些能力，再生成角色 |
 | **能力覆盖账本** | 每个必备能力必须有负责人、知识文件和记忆目标，防止漏角色 |
 | **团队契约** | 明确谁接任务、谁输出、谁写记忆、冲突怎么处理 |
@@ -582,6 +599,7 @@ flowchart LR
 
 ```
 团队控制面 (references/)
+  distillation-plan.md    ← 蒸馏计划：标准、组织、方法、摸底、记忆从哪里来
   capability-coverage.md ← 能力覆盖账本：必备能力由谁负责
   team-contract.md       ← 团队契约：角色责任、路由、记忆写入
 
@@ -595,6 +613,7 @@ flowchart LR
   每个角色自己的评分细则、策略、题型分类
 
 用户长期记忆 (shared/)
+  baseline.md        ← 摸底评估（目标、起点、约束、风险）
   user-profile.md     ← 档案（目标/水平/时间规划）
   progress.md         ← 详细练习记录
   weak-points.md      ← 弱点状态机
@@ -783,6 +802,8 @@ V2.2 检查项：
 
 ```
 团队结构：
+  ✓ distillation-plan.md 存在，且包含目标和蒸馏对象
+  ✓ baseline.md 或 intake.md 存在，且包含目标和当前状态
   ✓ capability-coverage.md 存在，且必备能力都有成员/知识/记忆承接
   ✓ team-contract.md 存在，且包含角色责任/路由/记忆写入契约
   ✓ knowledge-index.md 存在且有路由表
@@ -819,11 +840,12 @@ shangdi/
 │   ├── person-skill.md                   # 人物 Skill 模板
 │   └── codex-adapter.md                  # Codex 适配规则
 ├── scripts/
-│   └── quality_check.py                  # V2.2 质量检查（能力账本 + 团队契约）
+│   └── quality_check.py                  # V3 质量检查（蒸馏计划 + 摸底 + 能力账本 + 团队契约）
 └── examples/
     └── ielts-team/                       # 完整示例：雅思备考团队（V2）
         ├── SKILL.md                      # 协调器（智能推荐 + 周/月复盘）
         ├── references/                   # 团队共享知识库
+        │   ├── distillation-plan.md      #   目标导向蒸馏计划
         │   ├── capability-coverage.md    #   能力覆盖账本
         │   ├── team-contract.md          #   团队契约
         │   ├── knowledge-index.md        #   路由表
@@ -838,6 +860,7 @@ shangdi/
         │   ├── vocabulary-supervisor/
         │   └── study-planner/
         └── shared/                       # 用户长期记忆（真实填充的示例数据）
+            ├── baseline.md               #   初始摸底评估
             ├── user-profile.md           #   真实学员档案（目标7分/备考22天）
             ├── progress.md               #   15条练习记录（3月25日至今）
             ├── weak-points.md            #   4个当前弱点（含状态演化）+ 1个已改善
@@ -856,15 +879,18 @@ shangdi/
 - [x] 核心元 Skill（Phase 0-5 完整流程）
 - [x] 三种类型（功能/人物/团队）
 - [x] 四层团队架构（控制面 / 团队共享 / 成员专属 / 用户记忆）
+- [x] 目标导向蒸馏计划（领域标准 / 组织结构 / 能力方法 / 摸底 / 记忆）
+- [x] 初始摸底评估（baseline）进入长期记忆系统
 - [x] V2 长期记忆（session-log → 周复盘 → 月总结 → 归档）
 - [x] 弱点状态机（发现→训练中→待复查→已改善→已稳定→复发）
 - [x] 领域设计维度参考（推演工具，非固定模板）
 - [x] Codex 平台适配
 - [x] 雅思团队完整示例（含真实数据填充的 V2 长期记忆）
-- [x] V2.2 质量检查工具（能力账本 + 团队契约 + 泛化语义覆盖）
+- [x] V3 质量检查工具（蒸馏计划 + 摸底 + 能力账本 + 团队契约）
 - [x] Phase 0.8 能力覆盖检查（生成前强制验证无能力漏洞）
 - [x] 雅思阅读教练（V2.1 修复：文档提到阅读但成员缺失）
 - [x] V2.2 团队控制面：能力覆盖账本 + 团队契约 + 泛化质量检查
+- [x] V3 目标导向蒸馏：不把所有单元都做人设，而是按目标生成能力单元
 
 ### 进行中
 

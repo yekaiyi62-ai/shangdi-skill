@@ -109,6 +109,41 @@ def check_knowledge_index(team_dir: Path) -> tuple[bool, str]:
     return False, "❌ 缺少 references/knowledge-index.md"
 
 
+def check_distillation_plan(team_dir: Path) -> tuple[bool, str]:
+    """检查是否有目标导向蒸馏计划。"""
+    plan = team_dir / "references" / "distillation-plan.md"
+    if not plan.exists():
+        return False, "❌ 缺少 references/distillation-plan.md"
+    content = plan.read_text(encoding='utf-8')
+    required = ["目标", "蒸馏对象"]
+    missing = [item for item in required if item not in content]
+    has_table = bool(re.search(r'\|.*\|.*\|', content))
+    if missing or not has_table:
+        details = []
+        if missing:
+            details.append(f"缺少: {', '.join(missing)}")
+        if not has_table:
+            details.append("缺少蒸馏对象表")
+        return False, f"❌ distillation-plan.md 不完整: {'; '.join(details)}"
+    return True, "distillation-plan.md 存在且包含目标/蒸馏对象 ✅"
+
+
+def check_baseline_file(team_dir: Path) -> tuple[bool, str]:
+    """检查是否有摸底评估文件。"""
+    shared = team_dir / "shared"
+    baseline = shared / "baseline.md"
+    intake = shared / "intake.md"
+    if not baseline.exists() and not intake.exists():
+        return False, "❌ 缺少 shared/baseline.md 或 shared/intake.md"
+    target = baseline if baseline.exists() else intake
+    content = target.read_text(encoding='utf-8')
+    required = ["目标", "当前状态"]
+    missing = [item for item in required if item not in content]
+    if missing:
+        return False, f"❌ {target.name} 缺少section: {', '.join(missing)}"
+    return True, f"{target.name} 存在且包含目标/当前状态 ✅"
+
+
 def check_shared_memory_files(team_dir: Path) -> tuple[bool, str]:
     """检查shared/下的长期记忆文件是否完整"""
     shared = team_dir / "shared"
@@ -408,6 +443,8 @@ def check_team(team_dir: Path) -> None:
     # === 团队级检查 ===
     print("\n🏗️  团队结构检查:")
     team_checks = [
+        ("蒸馏计划", lambda: check_distillation_plan(team_dir)),
+        ("摸底评估", lambda: check_baseline_file(team_dir)),
         ("能力账本", lambda: check_capability_coverage_file(team_dir)),
         ("团队契约", lambda: check_team_contract(team_dir)),
         ("知识索引", lambda: check_knowledge_index(team_dir)),

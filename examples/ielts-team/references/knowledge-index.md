@@ -14,13 +14,14 @@
 | 制定/调整计划 | `references/exam-overview.md` + `shared/user-profile.md` + `shared/progress.md` + `shared/weak-points.md` |
 | 查看进度报告 | `shared/progress.md` + `shared/user-profile.md` + `shared/weak-points.md` |
 | 不知道练什么 | `shared/progress.md` + `shared/weak-points.md` + `shared/user-profile.md` |
-| 检查团队结构/成员缺口 | `references/capability-coverage.md` + `references/team-contract.md` |
+| 初始摸底/阶段复测 | `references/distillation-plan.md` + `shared/baseline.md` + `shared/user-profile.md` |
+| 检查团队结构/成员缺口 | `references/distillation-plan.md` + `references/capability-coverage.md` + `references/team-contract.md` |
 
 ## 按角色索引
 
 | 角色 | 启动时必读 | 按需读取 |
 |------|-----------|---------|
-| 协调器 | `shared/user-profile.md`, `references/capability-coverage.md`, `references/team-contract.md` | `shared/progress.md`, `shared/weak-points.md`, `references/knowledge-index.md` |
+| 协调器 | `shared/baseline.md`, `shared/user-profile.md`, `references/distillation-plan.md`, `references/capability-coverage.md`, `references/team-contract.md` | `shared/progress.md`, `shared/weak-points.md`, `references/knowledge-index.md` |
 | 写作教练 | `shared/user-profile.md`, `members/writing-coach/references/writing-rubric.md` | `references/official-rubrics.md`, `shared/progress.md` |
 | 口语教练 | `shared/user-profile.md`, `members/speaking-coach/references/speaking-rubric.md` | `references/official-rubrics.md`, `shared/progress.md` |
 | 听力训练师 | `shared/user-profile.md`, `members/listening-trainer/references/listening-strategies.md` | `references/exam-overview.md`, `shared/progress.md` |
@@ -33,6 +34,7 @@
 | 文件 | 内容摘要 | 谁会用到 |
 |------|---------|---------|
 | `references/exam-overview.md` | 雅思考试结构、时间、题型总览 | 协调器、听力训练师、学习规划师 |
+| `references/distillation-plan.md` | 目标导向蒸馏计划：标准、组织、能力方法、摸底和记忆结构 | 协调器、质量检查 |
 | `references/capability-coverage.md` | 能力覆盖账本：必备能力、负责人、知识文件、记忆目标 | 协调器、质量检查 |
 | `references/team-contract.md` | 团队契约：角色责任、路由、记忆写入、冲突处理 | 协调器、所有成员 |
 | `references/official-rubrics.md` | 官方评分标准（写作4维度+口语4维度） | 写作教练、口语教练 |
@@ -44,5 +46,6 @@
 | `members/vocabulary-supervisor/references/topic-vocabulary.md` | 雅思核心话题词汇分类 | 词汇监督 |
 | `members/study-planner/references/planning-strategies.md` | 备考策略和时间分配规则 | 学习规划师 |
 | `shared/user-profile.md` | 用户目标、水平、考试日期 | 所有角色 |
+| `shared/baseline.md` | 初始摸底：目标、当前状态、约束和第一轮评估计划 | 协调器、所有角色 |
 | `shared/progress.md` | 练习历史和分数趋势 | 所有角色 |
 | `shared/weak-points.md` | 当前弱点画像 | 协调器、学习规划师 |

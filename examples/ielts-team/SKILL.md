@@ -29,6 +29,7 @@ description: |
 
 | 文件 | 用途 | 位置 |
 |------|------|------|
+| 蒸馏计划 | 本团队从哪些标准、方法、摸底方式和记忆结构中蒸馏而来 | `references/distillation-plan.md` |
 | 能力覆盖账本 | 听说读写等核心能力是否都有负责人、知识和记忆承接 | `references/capability-coverage.md` |
 | 团队契约 | 角色责任、路由、记忆写入和冲突处理规则 | `references/team-contract.md` |
 | 知识索引 | 什么问题读什么文件 | `references/knowledge-index.md` |
@@ -51,6 +52,7 @@ description: |
 
 | 文件 | 用途 | 位置 |
 |------|------|------|
+| 摸底评估 | 初始能力、目标差距、约束和第一轮评估计划 | `shared/baseline.md` |
 | 用户档案 | 目标分数、当前水平、考试日期 | `shared/user-profile.md` |
 | 进度追踪 | 各科练习记录和得分趋势 | `shared/progress.md` |
 | 弱点画像 | 弱点状态机（发现→训练中→待复查→已改善→已稳定→复发） | `shared/weak-points.md` |
@@ -67,14 +69,15 @@ description: |
 
 收到用户请求后：
 
-1. 读取 `references/capability-coverage.md`，确认请求涉及的能力由谁负责
-2. 读取 `references/team-contract.md`，确认路由和记忆写入责任
-3. 读取 `references/knowledge-index.md`，判断需要哪些知识文件
-4. 读取 `shared/user-profile.md`，了解用户当前状态
-5. 根据任务类型：
+1. 读取 `references/distillation-plan.md`，确认团队的标准来源和蒸馏边界
+2. 读取 `references/capability-coverage.md`，确认请求涉及的能力由谁负责
+3. 读取 `references/team-contract.md`，确认路由和记忆写入责任
+4. 读取 `references/knowledge-index.md`，判断需要哪些知识文件
+5. 读取 `shared/baseline.md` 和 `shared/user-profile.md`，了解用户起点和当前状态
+6. 根据任务类型：
    - 如果自己处理（查进度/做计划/智能推荐）→ 按知识索引读取对应文件
    - 如果转发给成员 → 附带需要读取的知识文件列表
-6. **不要一次性读取所有资料，只读取当前任务需要的文件**
+7. **不要一次性读取所有资料，只读取当前任务需要的文件**
 
 ### 首次使用
 
