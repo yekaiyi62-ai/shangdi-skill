@@ -51,15 +51,29 @@
 
 **原则**：共享知识放团队级，专属知识放成员级。避免重复，避免标准不一致。
 
-### 第三层：用户记忆库 (`shared/`)
+### 第三层：用户记忆库 (`shared/`) — V2 长期记忆
 
-动态变化的用户状态和团队记忆：
-- `user-profile.md` — 用户目标、考试日期、基础水平
-- `progress.md` — 历史练习记录、分数变化
-- `weak-points.md` — 当前弱点画像
-- `session-log.md` — 每次会话摘要
+动态变化的用户状态、短期记录和长期归档：
 
-**原则**：shared/ 只放用户状态，不放静态知识。官方评分标准不是"用户状态"。
+**核心文件**（所有团队必须有）：
+- `[主体]-profile.md` — 核心对象档案（用户/宠物/产品/项目）
+- `progress.md` 或 `[核心动作]-log.md` — 主要活动记录
+- `session-log.md` — 每次会话摘要（保留最近 7 天）
+
+**长期记忆文件**（推荐）：
+- `weak-points.md` — 弱点状态追踪（有状态机：发现→训练中→待复查→已改善→已稳定→复发）
+- `weekly-reviews.md` — 周复盘（保留最近 4 周）
+- `monthly-summary.md` — 月度总结
+- `archive/` — 历史归档目录
+
+**领域特定文件**：
+- 不同领域生成不同的 shared/ 文件。详见 `references/domain-patterns.md`。
+
+**原则**：
+- shared/ 只放用户状态，不放静态知识
+- session-log 超过 7 天的记录归档到 `archive/week-XX.md`
+- weekly-reviews 超过 4 周的归档
+- 启动时不读 archive/，除非用户要求追溯历史
 
 ---
 
@@ -90,11 +104,16 @@
 │   │   ├── SKILL.md
 │   │   └── references/
 │   └── ...
-├── shared/                               # 用户状态和团队记忆
-│   ├── user-profile.md                   # 用户档案
+├── shared/                               # 用户状态和团队记忆（V2 长期记忆）
+│   ├── user-profile.md                   # 用户档案（或 pet-profile.md 等）
 │   ├── progress.md                       # 练习记录和分数趋势
-│   ├── weak-points.md                    # 当前弱点画像
-│   └── session-log.md                    # 会话摘要
+│   ├── weak-points.md                    # 弱点状态追踪（含状态机）
+│   ├── session-log.md                    # 会话摘要（保留最近 7 天）
+│   ├── weekly-reviews.md                 # 周复盘（保留最近 4 周）
+│   ├── monthly-summary.md               # 月度总结
+│   └── archive/                          # 历史归档
+│       ├── week-01.md
+│       └── week-02.md
 └── scripts/                              # 自动化工具（可选）
     └── quality_check.py
 ```
@@ -297,7 +316,63 @@ knowledge_needs:
 
 ---
 
-## 七、团队生成清单
+## 七、长期记忆规范（V2）
+
+### 记忆写入规则
+
+每次任务完成后：
+1. 更新 `progress.md`（或领域对应的 log 文件）
+2. 追加 `session-log.md`
+3. 如发现新弱点 → 写入 `weak-points.md`，必须包含证据和来源
+4. 如旧弱点连续 2 次通过 → 更新状态为"待复查"
+5. 如已改善弱点复发 → 标记为"复发"
+
+### 弱点状态机
+
+```
+发现 → 训练中 → 待复查 → 已改善 → 已稳定
+                    ↑          ↓         ↓
+                    └── 复发 ←─┴─────────┘
+```
+
+每个弱点必须包含：名称、状态、首次发现日期、来源/证据、最近复查结果、下一步动作。
+
+### 周复盘规则
+
+1. 汇总本周 session-log 中的所有任务
+2. 统计各模块练习次数和进度变化
+3. 评估弱点状态变化
+4. 生成下周重点建议
+5. 将本周 session-log 归档到 `archive/week-XX.md`
+6. 保留 session-log 最近 7 天内容
+
+### 月度总结规则
+
+1. 汇总月度 weekly-reviews
+2. 重新评估目标可达性
+3. 调整策略和资源分配
+4. 生成下月计划
+
+### 启动读取规则
+
+每次启动团队时默认读取：
+1. `shared/[主体]-profile.md`
+2. `shared/weak-points.md`（如有）
+3. `shared/progress.md` 最近 5-10 条
+4. `shared/weekly-reviews.md` 最近 2 周
+5. **不默认读取 `archive/`**，除非用户要求追溯历史
+
+### 归档规则
+
+| 文件 | 保留窗口 | 归档位置 |
+|------|---------|---------|
+| session-log.md | 最近 7 天 | `archive/week-XX.md` |
+| weekly-reviews.md | 最近 4 周 | `archive/month-XX.md` |
+| weak-points.md 已稳定项 | 稳定超 1 个月 | 移入"已稳定弱点（归档）"区块 |
+
+---
+
+## 八、团队生成清单
 
 生成团队时，必须产出以下所有文件：
 
@@ -309,16 +384,19 @@ knowledge_needs:
 - [ ] `references/official-standards.md` — 官方标准/规范
 - [ ] 每个成员的 `members/[role]/SKILL.md` — 含知识读取规则
 - [ ] 每个成员的 `members/[role]/references/` — 至少一个专属知识文件
-- [ ] `shared/user-profile.md` — 用户档案模板
-- [ ] `shared/progress.md` — 进度追踪模板
+- [ ] `shared/[主体]-profile.md` — 核心对象档案
+- [ ] `shared/progress.md` 或 `shared/[核心动作]-log.md` — 活动记录
+- [ ] `shared/session-log.md` — 会话摘要
 - [ ] `README.md` — 团队使用说明
 
 ### 推荐生成
 
 - [ ] `references/common-errors.md` — 常见错误分类
 - [ ] `references/source-index.md` — 资料来源索引
-- [ ] `shared/weak-points.md` — 弱点画像模板
-- [ ] `shared/session-log.md` — 会话摘要模板
+- [ ] `shared/weak-points.md` — 弱点状态追踪（能力提升类团队必须有）
+- [ ] `shared/weekly-reviews.md` — 周复盘
+- [ ] `shared/monthly-summary.md` — 月度总结
+- [ ] `shared/archive/` — 历史归档
 
 ### 可选生成
 

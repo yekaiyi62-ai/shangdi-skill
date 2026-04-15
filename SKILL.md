@@ -73,10 +73,11 @@ description: |
 用户需要一组协同工作的Skill。确认：
 
 1. **团队要完成什么总目标？** 比如「雅思备考从6分到7分」
-2. **需要哪些角色？** 列出初步角色设计（用户可增删改）
-3. **角色之间如何协作？** 独立工作 vs 有依赖关系 vs 需要总调度
-4. **需要共享数据吗？** 比如学习进度、用户档案
-5. **平台**：Claude Code / Codex / 两者都要？
+2. **领域类型判断**：读取 `references/domain-patterns.md`，识别领域类型（考试学习/健身健康/宠物照护/选购决策/产品执行/内容创作/研究分析/技能习得），不同领域生成不同的角色和 shared/ 结构
+3. **需要哪些角色？** 根据领域类型推荐默认角色（用户可增删改）
+4. **角色之间如何协作？** 独立工作 vs 有依赖关系 vs 需要总调度
+5. **需要长期记忆吗？** 是长期陪伴（需要周/月复盘）还是一次性任务？
+6. **平台**：Claude Code / Codex / 两者都要？
 
 #### 角色设计展示格式
 
@@ -474,7 +475,7 @@ Step 1 → Step 2 → ... → 输出
 
 > 详细的三层知识架构规范参见 `references/team-knowledge-architecture.md`。
 
-**团队 = 角色 + 知识库 + 记忆系统 + 读取规则 + 验证机制**
+**团队 = 角色 + 专属知识库 + 团队共享知识库 + 长期记忆系统 + 周/月复盘 + 按需读取规则 + 质量检查**
 
 1. 生成每个成员Skill的SKILL.md（含知识读取规则）
 2. 生成团队协调器的SKILL.md（含知识路由和分发规则）
@@ -486,9 +487,20 @@ Step 1 → Step 2 → ... → 输出
 4. **生成每个成员的专属知识库**：
    - `members/[role]/references/` — 每个角色至少一个专属知识文件
    - 角色专属评分标准、题型分类、训练方法、反馈语料等
-5. 生成共享数据模板（user-profile.md、progress.md、weak-points.md）
-6. 生成团队README说明使用方式
-7. **每个成员Skill中写入知识读取规则和团队协作规则**
+5. **生成长期记忆系统**：
+   - `shared/user-profile.md` — 用户/主体档案
+   - `shared/progress.md` — 进度追踪
+   - `shared/weak-points.md` — 弱点画像（含状态机：发现→训练中→待复查→已改善→已稳定→复发）
+   - `shared/session-log.md` — 会话摘要（保留最近7天）
+   - `shared/weekly-reviews.md` — 周复盘（保留最近4周）
+   - `shared/monthly-summary.md` — 月度总结
+   - `shared/archive/` — 过期日志归档目录
+6. **根据领域类型动态调整 shared/ 结构**：
+   - 读取 `references/domain-patterns.md`，按领域类型生成对应的 shared/ 文件
+   - 例：健身领域额外生成 `shared/body-metrics.md`；宠物领域生成 `shared/pet-profile.md`
+   - 通用文件（session-log、weekly-reviews、monthly-summary、archive）所有领域必须有
+7. 生成团队README说明使用方式
+8. **每个成员Skill中写入知识读取规则和团队协作规则**（含 session-log 写入和弱点状态更新）
 
 #### 3.4.1 知识分层规则
 
@@ -556,11 +568,16 @@ Codex适配规则参见 `templates/codex-adapter.md`。
 │   │   ├── SKILL.md
 │   │   └── references/
 │   └── ...
-├── shared/                               # 用户状态和团队记忆
-│   ├── user-profile.md                   # 用户档案
+├── shared/                               # 用户状态和团队记忆（长期记忆系统）
+│   ├── user-profile.md                   # 用户/主体档案
 │   ├── progress.md                       # 进度追踪
-│   ├── weak-points.md                    # 弱点画像
-│   └── session-log.md                    # 会话摘要
+│   ├── weak-points.md                    # 弱点画像（含状态机）
+│   ├── session-log.md                    # 会话摘要（保留7天）
+│   ├── weekly-reviews.md                 # 周复盘（保留4周）
+│   ├── monthly-summary.md               # 月度总结
+│   ├── [domain-specific].md              # 领域特定文件（按domain-patterns.md生成）
+│   └── archive/                          # 过期日志归档
+│       └── week-XX.md                    # 归档的周日志
 └── scripts/
 ```
 

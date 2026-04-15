@@ -43,13 +43,17 @@ description: |
 每个成员在 `members/[role]/references/` 下有自己的专属知识文件。
 详见各成员 SKILL.md 中的知识读取规则。
 
-### 用户状态（共享数据）
+### 用户状态与长期记忆
 
 | 文件 | 用途 | 位置 |
 |------|------|------|
-| 用户档案 | 记录用户基本信息和目标 | `shared/user-profile.md` |
-| 进度追踪 | 记录各模块练习和进度 | `shared/progress.md` |
-| 弱点画像 | 当前弱点和已解决弱点 | `shared/weak-points.md` |
+| 核心档案 | 记录核心对象基本信息和目标 | `shared/[主体]-profile.md` |
+| 活动记录 | 记录各模块练习和进度 | `shared/progress.md` |
+| 弱点追踪 | 弱点状态机（发现→训练中→待复查→已改善→已稳定→复发） | `shared/weak-points.md` |
+| 会话摘要 | 每次任务的简要记录（保留最近7天） | `shared/session-log.md` |
+| 周复盘 | 每周汇总和下周重点（保留最近4周） | `shared/weekly-reviews.md` |
+| 月度总结 | 月度进步趋势和策略调整 | `shared/monthly-summary.md` |
+| 历史归档 | 过期的session-log和weekly-reviews | `shared/archive/` |
 
 ---
 
@@ -160,4 +164,68 @@ Step 3: 生成阶段化计划
 2. 读取该维度的练习记录和得分
 3. 调整难度/频率/优先级
 4. 更新计划展示给用户确认
+```
+
+---
+
+## 周复盘（协调器负责）
+
+每周末或用户要求时执行：
+
+```
+Step 1: 读取 shared/session-log.md 本周所有记录
+Step 2: 读取 shared/weak-points.md 弱点状态变化
+Step 3: 生成周复盘
+
+### 第 [N] 周 · [起始日期] ~ [结束日期]
+
+**本周数据**：
+- 总任务次数：[N] 次
+- 各模块分布：[模块A] [N] / [模块B] [N] / ...
+
+**进步与变化**：
+| 模块 | 周初 | 周末 | 变化 |
+|------|------|------|------|
+| ... | ... | ... | ↑/↓/→ |
+
+**弱点状态变化**：
+- [弱点X]：[上周状态] → [本周状态]
+
+**下周重点**：
+1. [重点1]
+2. [重点2]
+
+Step 4: 写入 shared/weekly-reviews.md
+Step 5: 将本周 session-log 归档到 shared/archive/week-XX.md
+Step 6: 保留 session-log 最近 7 天内容
+```
+
+---
+
+## 月度总结（协调器负责）
+
+每月末或用户要求时执行：
+
+```
+Step 1: 读取 shared/weekly-reviews.md 本月所有周复盘
+Step 2: 读取 shared/weak-points.md 月度弱点演化
+Step 3: 生成月度总结
+
+### [月份] 月度总结
+
+**月度概览**：
+- 总任务次数：[N]
+- 距目标：[进度评估]
+
+**月度趋势**：
+| 模块 | 月初 | 月末 | 月变化 | 距目标 |
+|------|------|------|--------|-------|
+
+**已解决弱点**：[列表]
+**持续弱点**：[列表]
+**策略调整**：[建议]
+**下月重点**：[计划]
+
+Step 4: 写入 shared/monthly-summary.md
+Step 5: 将本月 weekly-reviews 归档
 ```

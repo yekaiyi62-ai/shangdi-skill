@@ -43,13 +43,17 @@ description: |
 | 词汇监督 | 话题词汇分类、搭配、近义词辨析 | `members/vocabulary-supervisor/references/topic-vocabulary.md` |
 | 学习规划师 | 备考策略、时间分配、瓶颈识别 | `members/study-planner/references/planning-strategies.md` |
 
-### 用户状态（共享数据）
+### 用户状态与长期记忆（共享数据）
 
 | 文件 | 用途 | 位置 |
 |------|------|------|
 | 用户档案 | 目标分数、当前水平、考试日期 | `shared/user-profile.md` |
 | 进度追踪 | 各科练习记录和得分趋势 | `shared/progress.md` |
-| 弱点画像 | 当前弱点和已解决弱点 | `shared/weak-points.md` |
+| 弱点画像 | 弱点状态机（发现→训练中→待复查→已改善→已稳定→复发） | `shared/weak-points.md` |
+| 会话摘要 | 每次任务的简要记录（保留最近7天） | `shared/session-log.md` |
+| 周复盘 | 每周汇总和下周重点（保留最近4周） | `shared/weekly-reviews.md` |
+| 月度总结 | 月度进步趋势和策略调整 | `shared/monthly-summary.md` |
+| 历史归档 | 过期的session-log和weekly-reviews | `shared/archive/` |
 
 ---
 
@@ -175,4 +179,67 @@ Step 2: 生成报告
 
 📅 本周建议安排：
 - [具体到每天做什么]
+```
+
+---
+
+## 周复盘（每周末执行）
+
+```
+Step 1: 读取 shared/session-log.md 本周所有记录
+Step 2: 读取 shared/weak-points.md 弱点状态变化
+Step 3: 生成周复盘报告
+
+### 第 [N] 周 · [起始日期] ~ [结束日期]
+
+**本周数据**：
+- 总训练次数：[N] 次
+- 各科分布：口语[N] / 写作[N] / 听力[N] / 词汇[N]
+
+**进步与变化**：
+| 科目 | 周初 | 周末 | 变化 |
+|------|------|------|------|
+| 口语 | ...  | ...  | ↑/↓/→ |
+| 写作 | ...  | ...  | ↑/↓/→ |
+
+**弱点状态变化**：
+- [弱点X]：[上周状态] → [本周状态]
+
+**下周重点**：
+1. [重点1]
+2. [重点2]
+
+Step 4: 写入 shared/weekly-reviews.md（追加到末尾）
+Step 5: 将本周 session-log 归档到 shared/archive/week-XX.md
+Step 6: 删除 session-log.md 中超过7天的记录
+```
+
+---
+
+## 月度总结（每月末执行）
+
+```
+Step 1: 读取 shared/weekly-reviews.md 本月所有周复盘
+Step 2: 读取 shared/weak-points.md 月度弱点演化
+Step 3: 生成月度总结
+
+### [月份] 月度总结
+
+**月度概览**：
+- 总训练次数：[N]
+- 距考试：[剩余天数] 天
+
+**月度趋势**：
+| 科目 | 月初 | 月末 | 月变化 | 距目标 |
+|------|------|------|--------|-------|
+| 口语 | [分] | [分] | +/-    | [差距] |
+| 写作 | [分] | [分] | +/-    | [差距] |
+
+**已解决弱点**：[列表]
+**持续弱点**：[列表]
+**策略调整**：[建议]
+**下月重点**：[计划]
+
+Step 4: 写入 shared/monthly-summary.md（追加到末尾）
+Step 5: 将本月 weekly-reviews 归档
 ```
