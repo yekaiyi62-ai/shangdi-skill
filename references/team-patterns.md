@@ -164,10 +164,40 @@
 
 1. **协调器有写权限**：负责创建和更新共享数据
 2. **成员有读权限 + 追加权限**：可以读取共享数据，可以追加练习记录
-3. **成员发现弱点时**：追加到 `shared/weak-points.md`
+3. **成员发现弱点时**：追加到 `shared/weak-points.md`，必须包含证据和来源
 4. **冲突处理**：以最新时间戳为准
 5. **数据位置**：统一存储在 `shared/` 目录下
 6. **知识库文件不可日常修改**：`references/` 下的知识库文件在日常使用中不修改
+7. **session-log 归档**：超过 7 天的记录移到 `archive/week-XX.md`
+
+### 长期记忆规则（V2）
+
+**每次任务完成后**：
+1. 更新 `progress.md`（或领域对应的 log 文件）
+2. 追加 `session-log.md`
+3. 如发现新弱点 → 写入 `weak-points.md`，必须包含证据和来源
+4. 如旧弱点连续 2 次通过 → 更新状态为"待复查"
+
+**每周复盘**（协调器负责）：
+1. 汇总本周 session-log
+2. 写入 `weekly-reviews.md`
+3. 将详细 session-log 归档到 `archive/week-XX.md`
+4. 更新下周重点
+
+**每月总结**（协调器负责）：
+1. 汇总月度 weekly-reviews
+2. 写入 `monthly-summary.md`
+3. 重新评估目标和策略
+
+**启动时按需读取**：
+1. `shared/[主体]-profile.md` — 必读
+2. `shared/weak-points.md` — 必读（如有）
+3. `shared/progress.md` 最近 5-10 条 — 必读
+4. `shared/weekly-reviews.md` 最近 2 周 — 推荐
+5. `shared/archive/` — **不默认读取**，用户要求时才读
+
+**领域动态结构**：
+不同领域生成不同的 shared/ 文件。详见 `references/domain-patterns.md`。
 
 ## 四、协调器SKILL.md的核心结构
 
@@ -224,8 +254,10 @@
 
 ### 完成后
 1. 将本次练习/评估结果追加到 `shared/progress.md`
-2. 如果发现用户水平有显著变化，更新 `shared/user-profile.md`
-3. 如果发现新的弱点，追加到 `shared/weak-points.md`
+2. 追加本次会话摘要到 `shared/session-log.md`
+3. 如果发现用户水平有显著变化，更新 `shared/user-profile.md`
+4. 如果发现新弱点，追加到 `shared/weak-points.md`，包含证据和来源
+5. 如果旧弱点已通过复查，更新其状态
 ```
 
 ## 六、团队规模建议

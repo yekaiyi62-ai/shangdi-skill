@@ -213,7 +213,12 @@ Step 3:【检查点】确认新计划
 ### 完成后
 1. 计划变更时更新 `shared/user-profile.md` 中的时间安排
 2. 记录计划调整到 `shared/progress.md`
-3. 如果发现新弱点，追加到 `shared/weak-points.md`
+3. 追加本次会话摘要到 `shared/session-log.md`：
+   ```
+   [日期] 学习规划师 · [操作：制定/调整/复盘计划] · [关键变化一句话]
+   ```
+4. 如果发现新弱点，追加到 `shared/weak-points.md`（需包含：弱点名称、状态「发现」、首次发现日期、来源证据）
+5. 协助协调器执行周复盘时：读取 `shared/session-log.md`，汇总数据，写入 `shared/weekly-reviews.md`
 
 ### 与其他成员联动
 - 各教练的练习记录 → 规划师用于分析和调整计划

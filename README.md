@@ -203,15 +203,21 @@
 
 ## 安装
 
-### Claude Code
+### 方式1：npx 一键安装（推荐）
+
+```bash
+npx skills add yekaiyi62-ai/shangdi-skill --skill shangdi
+```
+
+### 方式2：手动安装
 
 ```bash
 # 克隆到本地
-git clone https://github.com/[your-repo]/shangdi.git
+git clone https://github.com/yekaiyi62-ai/shangdi-skill.git
 
 # 复制到 Claude Code skills 目录
 mkdir -p ~/.claude/skills/shangdi
-cp -r shangdi/* ~/.claude/skills/shangdi/
+cp -r shangdi-skill/* ~/.claude/skills/shangdi/
 ```
 
 ### 使用
@@ -306,6 +312,25 @@ Phase 5  交付 → 安装 + 使用演示
 
 每个成员启动时按知识读取规则加载对应知识，完成后更新用户状态。协调器根据知识索引按需分发。
 
+### V2 长期记忆系统
+
+团队Skill不只记住当前状态，还有完整的记忆生命周期：
+
+```
+每次任务 → session-log.md（保留7天）
+每周复盘 → weekly-reviews.md（保留4周）
+每月总结 → monthly-summary.md
+过期归档 → archive/week-XX.md
+```
+
+**弱点状态机**：自动追踪用户弱点的演化过程：
+```
+发现 → 训练中 → 待复查 → 已改善 → 已稳定
+                                    ↘ 复发 → 训练中（重新进入循环）
+```
+
+**领域动态生成**：不同领域生成不同的 `shared/` 文件结构。8种领域类型（考试学习/健身健康/宠物照护/选购决策/产品执行/内容创作/研究分析/技能习得），各有专属的角色模式和记忆文件。详见 `references/domain-patterns.md`。
+
 详细规范参见 `references/team-knowledge-architecture.md`。
 
 ---
@@ -319,7 +344,8 @@ shangdi/
 ├── references/
 │   ├── capability-matrix.md         # Skill能力矩阵参考
 │   ├── team-patterns.md             # 团队编排模式参考
-│   └── team-knowledge-architecture.md # 团队知识库三层架构规范
+│   ├── team-knowledge-architecture.md # 团队知识库三层架构规范
+│   └── domain-patterns.md            # 领域动态生成规则（8种领域）
 ├── templates/
 │   ├── functional-skill.md          # 功能Skill模板
 │   ├── team-coordinator.md          # 团队协调器模板
@@ -351,10 +377,14 @@ shangdi/
         │   └── study-planner/       # 学习规划师
         │       ├── SKILL.md
         │       └── references/      #   规划专属知识库
-        └── shared/                  # 用户状态和团队记忆
+        └── shared/                  # 用户状态和团队记忆（长期记忆系统）
             ├── user-profile.md      #   用户档案模板
             ├── progress.md          #   进度追踪模板
-            └── weak-points.md       #   弱点画像模板
+            ├── weak-points.md       #   弱点画像（含状态机）
+            ├── session-log.md       #   会话摘要（7天窗口）
+            ├── weekly-reviews.md    #   周复盘（4周窗口）
+            ├── monthly-summary.md   #   月度总结
+            └── archive/             #   过期日志归档
 ```
 
 ---
@@ -388,16 +418,33 @@ python3 scripts/quality_check.py path/to/team-dir --team
 
 ## Roadmap
 
+### 已完成
+
 - [x] 核心元Skill（上帝造物术）
 - [x] 三种Skill类型支持（功能/人物/团队）
 - [x] 团队模式（协调器 + 成员 + 共享数据）
 - [x] Codex平台适配
 - [x] 雅思备考团队示例
 - [x] 质量检查工具
-- [ ] 更多示例：产品团队、代码审查、内容创作
+- [x] 三层知识架构（团队共享 + 成员专属 + 用户记忆）
+- [x] V2 长期记忆系统（session-log → weekly-reviews → monthly-summary → archive）
+- [x] 弱点状态机（发现→训练中→待复查→已改善→已稳定→复发）
+- [x] 领域动态生成（8种领域类型）
+
+### 进行中
+
 - [ ] `npx skills add` 一键安装支持
-- [ ] 团队Skill的Web UI进度面板
-- [ ] 团队成员之间的自动触发联动
+- [ ] 更多示例：产品团队、代码审查、内容创作
+
+### 后端演进路线
+
+| 版本 | 存储方案 | 状态 |
+|------|---------|------|
+| V1 | 纯 Markdown 文件 | ✅ 已完成 |
+| V2 | Markdown + 周/月复盘 | ✅ 当前版本 |
+| V3 | Markdown + JSON 索引 | 规划中 |
+| V4 | SQLite 本地数据库 | 规划中 |
+| V5 | 运行时后端服务 | 远期 |
 
 ---
 
