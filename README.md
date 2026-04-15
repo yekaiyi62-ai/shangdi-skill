@@ -2,50 +2,89 @@
 
 # 上帝 · 造物术
 
-**输入任意需求，自动生成有真实工作流、专属知识库、长期记忆的 AI Skill 或 AI 团队。**
+**输入任意需求，推演出专属于你的 AI 团队——有工作流、有知识库、有长期记忆。**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
 [![Version](https://img.shields.io/badge/Version-V2-brightgreen)](SKILL.md)
 
-<br>
-
-传统 Prompt 只教 AI「怎么说」。<br>
-上帝教 AI「怎么做」——有工作流、有工具调用、有专属知识、有长期记忆。
-
-<br>
-
-[效果示例](#效果示例) · [三种 Skill 类型](#三种-skill-类型) · [安装](#安装) · [工作原理](#工作原理) · [V2 架构](#v2-架构) · [项目结构](#项目结构)
-
 </div>
 
 ---
 
-## 它解决什么问题
+## 先看一个真实的场景
 
-你可能遇到过这些场景：
+你准备考雅思。你告诉上帝：「帮我备考雅思，目标 7 分，还有 46 天。」
 
-- 写了一个很长的 System Prompt，但 AI 每次对话都忘记上次做了什么
-- 想让 AI 帮你练雅思，但它给的反馈千篇一律，没有专业标准
-- 需要一个「团队」——写作、规划、执行各司其职，却不知道怎么组织
-- 做了一份 Skill，但 AI 拿到后不知道先做什么，全靠自由发挥
+上帝不会给你一个通用的「学习助手」。它会先问你几个问题：
 
-上帝造物术生成的 Skill 解决这四个问题：
+> 上帝：你上次考了多少？哪科差最多？每天能投入多少时间？
 
-| 问题 | 解决方式 |
-|------|---------|
-| 没有记忆 | 长期记忆系统：session-log → 周复盘 → 月总结 → 归档 |
-| 没有专业知识 | 三层知识库：团队共享 + 角色专属 + 官方标准 |
-| 没有团队协作 | 一次生成协调器 + N 个成员，自动路由和交接 |
-| 没有工作流 | 每个 Step 有明确输入/输出，关键节点有用户确认 |
+你告诉它：上次 6.0，写作和口语最弱，每天晚上有两小时。
+
+然后你拿到的是这个：
+
+```
+推荐团队结构（请确认或调整）：
+
+协调器         ← 你的入口，负责路由、进度报告、周/月复盘
+├── 写作教练   ← Task 1 & Task 2 批改、按4维度评分、逐句修改
+├── 口语教练   ← Part 1/2/3 模拟、FC/LR/GRA/P评分、发音建议
+├── 听力训练师 ← 精听方法、题型策略、Section 3/4 攻克
+├── 词汇监督   ← 话题词汇积累、搭配训练、测试出题
+└── 学习规划师 ← 制定计划、进度追踪、模拟考安排
+
+共享知识库：官方 Band 评分标准、中国考生常见错误、话题词汇分类
+长期记忆：你的练习记录 + 弱点追踪 + 每周复盘 + 月度总结
+
+要调整成员或开始生成吗？
+```
+
+这是上帝造物术做的事：**从你的需求推演出专属的团队**，不是套模板。
 
 ---
 
-## 效果示例
+## 它和传统 Prompt/Skill 有什么不同
 
-### 示例 1：雅思写作教练（功能 Skill）
+| | 传统 Prompt | 上帝生成的 Skill |
+|---|---|---|
+| **记忆** | 每次对话从零开始 | 记住你的练习记录、弱点状态、历史进度 |
+| **知识** | 依赖 AI 的通用知识 | 专属知识库：官方评分标准 + 角色专属策略 |
+| **输出** | 随机的自由文本 | 结构化输出，每次都有格式可预期 |
+| **工作流** | 一步到位，全靠 AI 发挥 | Step-by-step，关键节点你来确认 |
+| **弱点追踪** | 无 | 状态机：发现→训练中→待复查→已改善→已稳定 |
+| **团队** | 一个 Prompt 一个角色 | 一次生成完整协作团队 |
+| **结构** | 固定的通用模板 | 从你的需求推演出来的专属结构 |
 
-不是泛泛地说「写得不错」，而是按官方 4 维度评分、逐句标注、给出高分替换：
+---
+
+## 三种造物类型
+
+### 功能 Skill
+
+有明确的输入→处理→输出，能调用工具，有结构化结果。
+
+适合：代码审查、文案批改、数据分析、翻译润色……任何有专业标准的重复性任务。
+
+### 人物 Skill
+
+蒸馏某人的思维框架，用他的认知逻辑处理你的问题，而不只是模仿他说话。
+
+适合：芒格的投资判断、费曼的解释方式、某个领域专家的决策框架……
+
+### 团队 Skill
+
+一次生成多个协同工作的角色——协调器负责路由、成员各司其职、共享知识库和记忆系统把团队连成一个整体。
+
+适合：考试备考、健身计划、产品开发、内容创作……需要多角色配合的长期任务。
+
+---
+
+## 团队 Skill 实际上是什么样的
+
+以雅思备考团队为例，看看一次完整的交互：
+
+### 场景一：第一次练写作
 
 ```
 用户      ❯ [粘贴一篇 Task 2 作文]
@@ -56,195 +95,183 @@
              字数：267 词
             ═══════════════════════════════
 
-            📊 分数：6.0 / 9.0
+            📊 估计分数：6.0 / 9.0
 
             维度细分：
-              TA  任务完成    6.0  立场清晰但论证不够深入
-              CC  连贯衔接    6.0  段落结构合理，段内衔接偏弱
-              LR  词汇资源    5.5  "good" 出现 6 次，缺少同义替换
-              GRA 语法准确    6.5  有复杂句，从句连接偶有错误
+              TA  任务完成    6.0  立场清晰，但每个论点缺具体例子
+              CC  连贯衔接    6.0  段落结构合理，主体段内部有跳跃
+              LR  词汇资源    5.5  ⚠️ "good" 出现 6 次，"important" 出现 4 次
+              GRA 语法准确    6.5  复杂句结构可以，从句连接偶有错误
 
-            📝 逐段反馈：
+            📝 逐段问题：
 
             【开头段】
-              ❌ "In modern society..." → 考官反感的套话，直接改写题目
-              ⚡ "I think" → "I would argue that"（更学术）
+              ❌ "In modern society..." → 考官最反感的套话，直接改写题目
+              ⚡ "I think" → "I would argue that"（更学术，主观性更清晰）
 
             【主体段 1】
               ❌ "cars are very good for people"
-                 → "private vehicles offer considerable convenience"
-              ⚡ 缺少具体例子，加一个数据会更有说服力
+                 → "private vehicles offer considerable convenience to commuters"
+              ⚠️ 论点→解释→例子，你写了论点和解释，但没有例子
+                 → 加一句："For instance, in cities like Beijing..."
 
-            💡 提分关键：LR 是最弱项。把重复的 "good/bad/important"
-               替换为话题词汇，可以直接提 0.5 分。
+            💡 最值得练的一点：LR 是你最弱的维度，也是最容易提分的。
+               把"good/bad/important/nice"替换为话题词汇，
+               可以直接从 5.5 → 6.5，差的只是背单词的时间。
+
+            要看同题目的范文吗？
 ```
 
-### 示例 2：雅思团队协调器（团队 Skill）
-
-一个入口，自动分发到对应教练，基于真实的练习数据推荐：
+写作教练完成批改后，它会做几件事：
 
 ```
-用户      ❯ 不知道今天练什么
+→ 追加到 shared/progress.md：
+  | 2026-04-10 | 写作 | Task 2·社会 | TA:6/CC:6/LR:5.5/GRA:6.5 总:6.0 | LR停滞，词汇重复 |
 
-协调器    ❯ 看了一下你的记录：
-            - 写作已经 3 天没练了，上次 Task 2 拿了 6.0
-            - 口语昨天刚练过 Part 2，拿了 6.5
-            - 词汇测试正确率从 65% → 78%，进步明显
+→ 追加到 shared/session-log.md：
+  | 2026-04-10 | 写作教练 | Task 2 批改 | 总分 6.0 | LR 三次停滞，建议专项训练 |
 
-            建议今天的安排：
-            ┌─────────────────────────────┐
-            │ 📋 今日任务 · 4月16日        │
-            │ 备考第 23 天 · 距考试 37 天  │
-            ├─────────────────────────────┤
-            │ □ 写作练习：Task 2 一篇      │
-            │   预计 60 分钟 → 找写作教练  │
-            │                             │
-            │ □ 词汇复习：教育话题         │
-            │   预计 30 分钟 → 找词汇监督  │
-            └─────────────────────────────┘
-
-            要开始写作练习吗？我帮你转给写作教练出题。
-```
-
-### 示例 3：口语教练模拟考
-
-```
-用户      ❯ 练一个 Part 2
-
-口语教练  ❯ 好，给你一道当季真题：
-
-            ┌───────────────────────────────────┐
-            │ Describe a skill that you learned  │
-            │ from an older person               │
-            │                                   │
-            │ You should say:                   │
-            │ - what the skill is               │
-            │ - who you learned it from         │
-            │ - how you learned it              │
-            │ - and explain how you felt        │
-            └───────────────────────────────────┘
-
-            直接打字回答，我要看你真实水平才能帮你提分。
-
-用户      ❯ Well, I'd like to talk about cooking, which I
-            learned from my grandmother...
-
-口语教练  ❯ ═══════════════════════════
-             口语评分 · Part 2
-             话题：A skill from an older person
-            ═══════════════════════════
-
-            📊 分数：6.0 / 9.0
-
-            维度细分：
-              FC  流利连贯    6.0  基本流利，but/and 用太多
-              LR  词汇资源    5.5  "very good""very nice" 重复
-              GRA 语法准确    6.5  有复杂句，时态基本正确
-              P   发音        6.0  (基于文本估计)
-
-            ⚡ 高分替换：
-              "I think cooking is very important"
-              → "I've come to realize that cooking is an
-                 invaluable life skill"
-              原因：come to realize 比 I think 更有深度
+→ 更新 shared/weak-points.md：
+  "写作 LR 词汇重复" 状态：发现 → 训练中（连续 3 次停滞，正式立案）
 ```
 
 ---
 
-## 三种 Skill 类型
-
-### 1. 功能 Skill
-
-有明确的输入→处理→输出流程，能调用工具，有结构化输出。
+### 场景二：三周后协调器的周复盘
 
 ```
-例：雅思写作教练
-输入：用户作文
-处理：按官方 4 维度评分 → 逐句标注 → 高分替换
-输出：评分报告 + 修改建议 + 可选范文
+协调器    ❯ 第 3 周复盘 · 2026-04-07 ~ 2026-04-13
+
+            本周练了 5 次：写作 1 / 口语 1 / 词汇 1 / 听力 2
+
+            📊 分数变化：
+            ┌──────────┬──────┬──────┬──────┐
+            │ 科目      │ 上周  │ 本周  │ 变化  │
+            ├──────────┼──────┼──────┼──────┤
+            │ 写作      │ 6.1  │ 6.0  │ → 停滞│
+            │ 口语      │ 5.8  │ 5.9  │ ↑    │
+            │ 词汇正确率 │ 69%  │ 78%  │ ↑↑   │
+            │ 听力      │ —    │ 训练中 │ 开始  │
+            └──────────┴──────┴──────┴──────┘
+
+            🔄 弱点状态变化：
+            - 写作 CC 衔接弱：训练中 → 待复查（连续 2 次 CC ≥ 6.0 ✅）
+            - 听力 Section 3/4：新发现 → 训练中
+            - 口语 FC 停顿：训练中（未变化）
+
+            ⚠️ 需要注意：
+            - 写作 LR 连续三次 6.0，停滞超过 2 周，下周安排专项训练
+            - 阅读至今零练习，距考试 53 天，不能再拖
+
+            📅 下周建议（04-14 ~ 04-20）：
+            1. 写作：Task 2 专项 LR 训练，目标 LR ≥ 6.5
+            2. 口语：陌生话题 Part 2（验证 FC 改善是否真的有效）
+            3. 听力：每天 30 分钟精听，专注角色标记
+            4. 阅读：做一次摸底，评估当前水平
+
+            已归档：本周 session-log → archive/week-03.md
 ```
-
-**适合场景**：代码审查、文案评分、数据分析、翻译润色、格式转换……
-
-### 2. 人物 Skill
-
-蒸馏人物思维框架，具备 Agentic 研究能力。不只是模仿说话，是用他的认知框架分析问题。
-
-```
-例：芒格思维顾问
-输入：商业问题
-处理：WebSearch 获取最新事实 → 用芒格的心智模型分析
-      逆向思考 + 多元思维框架 + 第一性原理
-输出：芒格式判断（附上他会如何提问和反驳）
-```
-
-**适合场景**：决策顾问、思维框架、创业分析、投资判断……
-
-### 3. 团队 Skill
-
-一次生成多个协同工作的 Skill，含总调度器、共享知识库、长期记忆。
-
-```
-例：雅思备考团队
-                用户
-                 ↕
-            ┌─────────┐
-            │  协调器  │ ← 分发任务 + 智能推荐 + 进度报告 + 周/月复盘
-            └────┬────┘
-         ┌───────┼───────┬───────┐
-         ↓       ↓       ↓       ↓
-      口语教练 写作教练 听力训练师 词汇监督
-         │       │       │       │
-         └───────┴───────┴───────┘
-                    ↓
-              ┌──────────┐
-              │ 共享知识库 │ ← 评分标准 + 专属知识 + 用户档案 + 长期记忆
-              └──────────┘
-```
-
-**适合场景**：备考团队、健身教练组、产品团队、内容创作流水线……
 
 ---
 
-## 与传统 Skill/Prompt 的区别
+### 场景三：弱点从发现到解决的完整过程
 
-|  | 传统 Prompt | 上帝生成的 Skill |
-|---|---|---|
-| **记忆** | 每次对话从零开始 | 长期记忆：session-log → 周复盘 → 月总结 |
-| **知识** | 依赖 AI 通用知识 | 专属知识库（官方标准 + 角色专属 + 通用规则）|
-| **输出** | 自由文本，不可预期 | 结构化格式（评分卡、报告、计划表）|
-| **工作流** | 一步到位，靠 AI 发挥 | Step-by-step，关键节点用户确认 |
-| **团队** | 一个 Prompt 一个角色 | 一次生成完整协作团队 |
-| **弱点追踪** | 无 | 状态机：发现→训练中→待复查→已改善→已稳定 |
+弱点不是记录下来就算了，它有自己的生命周期：
+
+```
+2026-03-30  口语教练发现：LR 词汇贫乏，大量使用 nice/good/very
+            → 状态：发现 ← 在 weak-points.md 立案
+
+2026-04-01  词汇监督制定计划：按话题系统积累，每周出一次口语词汇专练
+            → 状态：训练中
+
+2026-04-11  口语教练：LR:6.0，有进步（话题：描述一项技能）
+            → 第 1 次通过
+
+2026-04-15  口语教练：LR:6.0，稳定（话题：工作/学习）
+            → 第 2 次连续通过 → 状态：待复查
+
+2026-04-22  口语教练：LR:6.0，第 3 次通过（陌生话题验证）
+            → 状态：已改善 → 协调器在周复盘中标注
+
+2026-05-06  口语教练：LR:5.5，复发！（陌生话题压力下词汇又贫乏了）
+            → 状态：复发 → 立即退回训练中
+            → 词汇监督增加陌生话题专练
+
+2026-05-20  连续 3 次 LR ≥ 6.0（包括陌生话题）
+            → 状态：已稳定 ← 正式解决
+```
+
+这不是 Prompt，这是一个有记忆、有状态、会跟进的系统。
+
+---
+
+## 上帝如何工作（五个阶段）
+
+### Phase 0：需求解析
+
+判断造什么。通过 1-2 轮追问，定位你的需求——单个功能 Skill？多角色团队？人物蒸馏？
+
+对于团队需求，上帝会识别领域类型，然后用该领域的设计问题和你对话，从你的具体答案推演出团队结构。这不是选模板，是一次设计对话。
+
+### Phase 1：能力设计
+
+先设计，再调研。定义每个角色的输入/输出/工具/工作流，设计团队的路由规则和数据交接方式。
+
+### Phase 2：领域调研
+
+按照能力设计中识别的知识需求，启动并行 Agent 调研——功能型调研行业标准，人物型调研六个维度（著作/对话/表达/决策/他者/时间线），结果全部写入 `references/research/`。
+
+### Phase 3：Skill 构建
+
+按三层知识架构组装：
+
+```
+团队共享知识库 (references/)
+  knowledge-index.md  ← 路由表：什么问题读什么文件，不一次性加载全部
+  domain-overview.md  ← 领域结构
+  official-standards.md  ← 官方评分标准/行业规范
+  common-errors.md  ← 常见错误
+
+成员专属知识库 (members/[role]/references/)
+  每个角色自己的评分细则、策略、题型分类
+
+用户长期记忆 (shared/)
+  user-profile.md     ← 档案（目标/水平/时间规划）
+  progress.md         ← 详细练习记录
+  weak-points.md      ← 弱点状态机
+  session-log.md      ← 每次任务摘要，滚动 7 天
+  weekly-reviews.md   ← 周复盘，滚动 4 周
+  monthly-summary.md  ← 月度总结
+  archive/            ← 历史归档
+```
+
+每个角色 SKILL.md 里都写明：启动时读哪些文件、完成后写哪些文件——包括 session-log 和弱点状态更新。
+
+### Phase 4：质量验证
+
+用真实输入测试工作流。团队模式额外测试：协调器路由是否正确、成员数据交接是否完整、共享记忆读写是否一致。
+
+### Phase 5：交付
+
+写入目标平台（Claude Code 或 Codex），展示使用方式，用一个样本走一遍完整流程。
 
 ---
 
 ## 安装
 
-### 方式 1：npx 一键安装（推荐）
+### npx 一键安装（推荐）
 
 ```bash
 npx skills add yekaiyi62-ai/shangdi-skill --skill shangdi
 ```
 
-### 方式 2：手动安装
+### 手动安装
 
 ```bash
 git clone https://github.com/yekaiyi62-ai/shangdi-skill.git
 mkdir -p ~/.claude/skills/shangdi
 cp -r shangdi-skill/* ~/.claude/skills/shangdi/
-```
-
-### 使用
-
-在 Claude Code 中直接说：
-
-```
-> 帮我做一个代码审查助手
-> 生成一个雅思备考团队
-> 蒸馏芒格的思维方式
-> 我想提升写作能力
-> 做一个健身打卡团队
 ```
 
 ### 直接使用雅思团队示例
@@ -253,133 +280,46 @@ cp -r shangdi-skill/* ~/.claude/skills/shangdi/
 cp -r shangdi-skill/examples/ielts-team ~/.claude/skills/ielts-team
 ```
 
-然后在 Claude Code 中：
+---
+
+## 在 Claude Code 中触发
+
 ```
-> 帮我练雅思口语
-> 改一下这篇作文
-> 今天练什么
-> 给我出一周计划
+> 帮我做一个代码审查助手          → 生成功能 Skill
+> 生成一个雅思备考团队            → 生成团队（5 教练 + 协调器 + 完整知识库）
+> 帮我准备 CFA 1 级，6 个月后考试  → 推演出和雅思完全不同的考试团队
+> 蒸馏芒格的思维方式              → 生成人物 Skill
+> 帮我养好我的猫（英国短毛猫，2岁）→ 推演出宠物照护团队
+> 我想提升写作能力                → 1-2 轮追问后给出方案
 ```
 
 ---
 
-## 工作原理
+## 质量检查工具
 
-上帝做五件事：
+每个生成的团队都可以自检：
 
-### Phase 0：需求解析
-
-判断你要造什么——单个功能 Skill、多角色团队、还是人物 Skill。模糊需求会通过 1-2 轮追问定位，不会变成问卷调查。
-
-同时读取 `references/domain-patterns.md`，识别领域类型（8 种：考试学习/健身健康/宠物照护/选购决策/产品执行/内容创作/研究分析/技能习得），不同领域生成不同的角色模式和记忆文件结构。
-
-### Phase 1：能力设计
-
-不是拿到需求就搜索，而是先定义 Skill 的能力矩阵：
-
-```yaml
-inputs:   # 接收什么
-outputs:  # 产出什么（含格式规范）
-tools:    # 需要 WebSearch / Read / Write / Bash / Agent
-workflow: # Step-by-step 处理流程（含检查点）
-knowledge: # 需要调研哪些领域知识
+```bash
+python3 scripts/quality_check.py path/to/team-dir --team
 ```
 
-### Phase 2：领域调研
-
-根据能力矩阵的知识需求，启动并行 Agent 调研：
-
-- **功能型**：行业标准、评分体系、最佳实践、常见错误
-- **人物型**：著作/对话/表达 DNA/决策案例/外部视角/时间线（6 个维度）
-- **团队型**：每个角色分别调研 + 协作模式
-
-所有调研结果写入 `references/research/`，不存文件 = 没做。
-
-### Phase 3：Skill 构建
-
-按三层知识架构组装：
+V2 检查项（14 项）：
 
 ```
-团队共享知识库 (references/)
-  → knowledge-index.md  知识路由表：什么问题读什么文件
-  → domain-overview.md  领域总览
-  → official-standards.md  官方评分标准/行业规范
-  → common-errors.md  常见错误
+团队结构：
+  ✓ knowledge-index.md 存在且有路由表
+  ✓ shared/ 下 6 个文件 + archive/ 目录齐全
+  ✓ 每个成员有自己的 references/ 专属知识库
+  ✓ weak-points.md 包含 6 个状态定义
 
-成员专属知识库 (members/[role]/references/)
-  → 角色特有的评分细则、题型分类、训练方法
+协调器：
+  ✓ frontmatter / 问题路由 / 工作流步骤 / 检查点
+  ✓ 输出格式规范 / 知识读取规则 / session-log 写入
+  ✓ 弱点追踪 / 文件引用路径验证
 
-用户长期记忆 (shared/)
-  → user-profile.md    用户档案（目标/水平/时间规划）
-  → progress.md        练习记录和得分趋势
-  → weak-points.md     弱点状态机
-  → session-log.md     每次任务摘要（保留 7 天）
-  → weekly-reviews.md  周复盘（保留 4 周）
-  → monthly-summary.md 月度总结
-  → archive/           历史归档
+每个成员：
+  ✓ 以上所有 + 输入输出定义 / 能力边界 / 领域知识
 ```
-
-### Phase 4：质量验证
-
-用样本输入测试完整工作流。团队模式额外测试协调器路由、成员数据交接、共享数据读写。
-
-### Phase 5：交付
-
-写入对应平台标准位置，展示使用方式，用一个样本演示工作流程。支持 Claude Code 和 Codex 双平台。
-
----
-
-## V2 架构
-
-### 长期记忆系统
-
-V2 最大的升级：Skill 不再「失忆」。
-
-```
-每次任务完成
-    ↓
-session-log.md（追加一条摘要）
-    ↓ 每 7 天
-weekly-reviews.md（协调器汇总本周数据）
-session-log → archive/week-XX.md（归档）
-    ↓ 每 4 周
-monthly-summary.md（月度趋势 + 策略调整）
-weekly-reviews → archive/month-XX.md（归档）
-```
-
-启动时读取规则：
-1. `shared/user-profile.md` — 必读
-2. `shared/weak-points.md` — 必读（如有）
-3. `shared/progress.md` 最近 10 条 — 必读
-4. `shared/weekly-reviews.md` 最近 2 周 — 推荐
-5. `shared/archive/` — **不默认读取**，用户要求时才读
-
-### 弱点状态机
-
-每个弱点都有生命周期，不是发现了就忘了：
-
-```
-发现 → 训练中 → 待复查 → 已改善 → 已稳定
-                              ↘
-                            复发 → 训练中（重新进入循环）
-```
-
-每条弱点记录必须包含：弱点名称、当前状态、首次发现日期、来源证据（哪次练习、什么表现）、下一步动作。
-
-### 领域动态生成
-
-8 种领域类型，生成不同的角色模式和 `shared/` 文件结构：
-
-| 领域 | 默认角色 | 特有记忆文件 |
-|------|---------|------------|
-| 考试学习 | 各科教练 + 规划师 | progress.md + weak-points.md |
-| 健身健康 | 训练师 + 营养师 + 恢复师 | body-metrics.md + workout-log.md |
-| 宠物照护 | 喂养 + 健康 + 行为 | pet-profile.md + health-log.md |
-| 选购决策 | 需求分析 + 比较研究 + 防坑 | decision-log.md |
-| 产品执行 | PM + 设计 + 研发 + 数据 | sprint-log.md + metrics.md |
-| 内容创作 | 选题 + 写作 + 审核 + 排版 | content-calendar.md |
-| 研究分析 | 文献综述 + 数据分析 + 写作 | research-log.md |
-| 技能习得 | 理论 + 实操 + 反馈 | practice-log.md |
 
 ---
 
@@ -387,132 +327,87 @@ weekly-reviews → archive/month-XX.md（归档）
 
 ```
 shangdi/
-├── SKILL.md                              # 核心：上帝元 Skill（入口）
-├── README.md
+├── SKILL.md                              # 核心元 Skill（上帝的大脑）
 ├── references/
-│   ├── capability-matrix.md              # Skill 能力矩阵参考
-│   ├── team-patterns.md                  # 团队编排模式（星型/流水线/并行）
-│   ├── team-knowledge-architecture.md    # 三层知识架构规范（详细）
-│   └── domain-patterns.md               # 8 种领域动态生成规则
+│   ├── domain-patterns.md               # 领域设计维度参考（思考工具，非固定模板）
+│   ├── team-patterns.md                  # 团队编排模式
+│   ├── team-knowledge-architecture.md    # 三层知识架构规范
+│   └── capability-matrix.md              # Skill 能力矩阵参考
 ├── templates/
-│   ├── functional-skill.md               # 功能 Skill 模板（含 V2 长期记忆规则）
-│   ├── team-coordinator.md               # 团队协调器模板（含周/月复盘）
+│   ├── functional-skill.md               # 功能 Skill 模板
+│   ├── team-coordinator.md               # 协调器模板（含周/月复盘）
 │   ├── person-skill.md                   # 人物 Skill 模板
-│   └── codex-adapter.md                  # Codex 平台适配规则
+│   └── codex-adapter.md                  # Codex 适配规则
 ├── scripts/
-│   └── quality_check.py                  # Skill 质量检查工具（V2）
+│   └── quality_check.py                  # V2 质量检查（14 项）
 └── examples/
-    └── ielts-team/                       # 示例：雅思备考团队（完整 V2）
-        ├── SKILL.md                      # 协调器（含周/月复盘工作流）
+    └── ielts-team/                       # 完整示例：雅思备考团队（V2）
+        ├── SKILL.md                      # 协调器（智能推荐 + 周/月复盘）
         ├── references/                   # 团队共享知识库
-        │   ├── knowledge-index.md        #   知识路由表
-        │   ├── exam-overview.md          #   雅思考试结构和评分换算
-        │   ├── official-rubrics.md       #   官方 Band 描述（5-8 分）
+        │   ├── knowledge-index.md        #   路由表
+        │   ├── exam-overview.md          #   雅思结构与分数换算
+        │   ├── official-rubrics.md       #   官方 Band 5-8 描述
         │   └── common-errors.md          #   中国考生常见错误
-        ├── members/
-        │   ├── speaking-coach/           # 口语教练
-        │   │   ├── SKILL.md
-        │   │   └── references/speaking-rubric.md
-        │   ├── writing-coach/            # 写作教练
-        │   │   ├── SKILL.md
-        │   │   └── references/writing-rubric.md
-        │   ├── listening-trainer/        # 听力训练师
-        │   │   ├── SKILL.md
-        │   │   └── references/listening-strategies.md
-        │   ├── vocabulary-supervisor/    # 词汇监督
-        │   │   ├── SKILL.md
-        │   │   └── references/topic-vocabulary.md
-        │   └── study-planner/           # 学习规划师
-        │       ├── SKILL.md
-        │       └── references/planning-strategies.md
-        └── shared/                       # 用户长期记忆（V2）
-            ├── user-profile.md           #   用户档案模板
-            ├── progress.md               #   练习记录
-            ├── weak-points.md            #   弱点状态机
-            ├── session-log.md            #   会话摘要（7 天窗口）
-            ├── weekly-reviews.md         #   周复盘（4 周窗口）
-            ├── monthly-summary.md        #   月度总结
-            └── archive/                  #   历史归档
-```
-
----
-
-## 质量检查
-
-每个生成的 Skill 都可以用内置工具自检：
-
-```bash
-# 检查单个 Skill
-python3 scripts/quality_check.py path/to/SKILL.md
-
-# 检查团队 Skill（自动检查协调器 + 所有成员）
-python3 scripts/quality_check.py path/to/team-dir --team
-```
-
-V2 检查项（团队模式）：
-
-```
-🏗️ 团队结构检查：
-  知识索引    → references/knowledge-index.md 存在且有路由表
-  长期记忆    → shared/ 下 6 个文件 + archive/ 目录齐全
-  成员知识库  → 每个成员有自己的 references/ 目录
-  弱点状态机  → weak-points.md 包含完整的 6 个状态
-
-📋 协调器检查：
-  问题路由 / 工作流 / 检查点 / 输出格式 / 知识读取规则 /
-  会话日志写入 / 弱点追踪 / 文件路径验证
-
-👤 成员检查（每个成员）：
-  frontmatter / 问题路由 / 工作流 / 输入输出 / 能力边界 /
-  检查点 / 输出格式 / 领域知识 / 知识读取规则 /
-  会话日志写入 / 弱点追踪 / 文件路径验证
+        ├── members/                      # 5 个专业教练
+        │   ├── writing-coach/
+        │   ├── speaking-coach/
+        │   ├── listening-trainer/
+        │   ├── vocabulary-supervisor/
+        │   └── study-planner/
+        └── shared/                       # 用户长期记忆（真实填充的示例数据）
+            ├── user-profile.md           #   真实学员档案（目标7分/备考22天）
+            ├── progress.md               #   15条练习记录（3月25日至今）
+            ├── weak-points.md            #   4个当前弱点（含状态演化）+ 1个已改善
+            ├── session-log.md            #   最近7天会话（4月10-16日）
+            ├── weekly-reviews.md         #   3周复盘（含趋势分析和下周建议）
+            ├── monthly-summary.md        #   3月月度总结
+            └── archive/
 ```
 
 ---
 
 ## Roadmap
 
-### 已完成 (V1 + V2)
+### 已完成
 
-- [x] 核心元 Skill（上帝造物术，5 个 Phase）
-- [x] 三种 Skill 类型（功能/人物/团队）
-- [x] 三层知识架构（团队共享 + 成员专属 + 用户记忆）
-- [x] V2 长期记忆系统（session-log → 周复盘 → 月总结 → 归档）
-- [x] 弱点状态机（6 个状态 + 证据要求）
-- [x] 8 种领域动态生成规则
+- [x] 核心元 Skill（Phase 0-5 完整流程）
+- [x] 三种类型（功能/人物/团队）
+- [x] 三层知识架构（团队共享 / 成员专属 / 用户记忆）
+- [x] V2 长期记忆（session-log → 周复盘 → 月总结 → 归档）
+- [x] 弱点状态机（发现→训练中→待复查→已改善→已稳定→复发）
+- [x] 领域设计维度参考（推演工具，非固定模板）
 - [x] Codex 平台适配
-- [x] 雅思备考团队完整示例（5 教练 + 协调器 + 完整知识库）
-- [x] V2 质量检查工具（14 项检查）
+- [x] 雅思团队完整示例（含真实数据填充的 V2 长期记忆）
+- [x] V2 质量检查工具（14 项）
 
 ### 进行中
 
 - [ ] `npx skills add` 一键安装
-- [ ] 更多示例：健身团队、产品团队、内容创作流水线
+- [ ] 更多示例：CFA 备考团队、健身团队、内容创作流水线
 
 ### 后端演进路线
 
-上帝造物术的定位是先把 Skill 系统做扎实，存储层逐步演进：
+Skill 系统先做扎实，存储层逐步演进：
 
 | 版本 | 存储 | 状态 |
 |------|------|------|
 | V1 | 纯 Markdown | ✅ 完成 |
-| V2 | Markdown + 周/月复盘 | ✅ 当前版本 |
-| V3 | Markdown + JSON 索引 | 规划中 |
+| V2 | Markdown + 周/月复盘 | ✅ 当前 |
+| V3 | Markdown + JSON 索引（快速检索）| 规划中 |
 | V4 | SQLite 本地数据库 | 规划中 |
-| V5 | 运行时后端服务 | 远期 |
+| V5 | 运行时后端 | 远期 |
 
 ---
 
 ## Contributing
 
-欢迎贡献！特别欢迎：
+特别欢迎：
 
-- **新示例**：用上帝生成一个团队，提交到 `examples/`
-- **新领域**：在 `references/domain-patterns.md` 添加新的领域类型
-- **质量检查**：完善 `quality_check.py` 的检查规则
-- **平台适配**：添加 Cursor、Gemini CLI 等平台支持
+- **新示例**：用上帝生成一个团队提交到 `examples/`（附真实数据填充的 shared/）
+- **新领域设计问题**：在 `references/domain-patterns.md` 补充新领域的设计维度
+- **质量检查扩展**：完善 `quality_check.py`
 
-请先开 Issue 讨论，再提 PR。
+请先开 Issue 讨论再 PR。
 
 ---
 
@@ -524,7 +419,7 @@ MIT — 随便用，随便改，随便造。
 
 <div align="center">
 
-传统 Skill 教 AI 怎么说。<br>
-上帝教 AI 怎么做。
+传统 Prompt 教 AI 怎么说。<br>
+上帝教 AI 怎么做——而且记得你上次做了什么。
 
 </div>
