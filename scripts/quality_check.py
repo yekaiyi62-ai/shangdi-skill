@@ -191,6 +191,100 @@ def check_file_paths_in_skill(content: str, skill_dir: Path, member_dir=None) ->
     return True, f"文件引用验证: {len(checked)}个路径全部存在 ✅"
 
 
+def check_semantic_coverage(team_dir: Path) -> tuple[bool, str]:
+    """语义覆盖检查：协调器/knowledge-index/progress中提到的核心模块，是否都有对应成员。
+
+    从协调器SKILL.md和knowledge-index.md中提取核心能力词，
+    然后检查members/下是否有对应角色目录。
+    """
+    # 从协调器和知识索引中提取关键能力词
+    ability_texts = []
+    coord = team_dir / "SKILL.md"
+    ki = team_dir / "references" / "knowledge-index.md"
+    for f in [coord, ki]:
+        if f.exists():
+            ability_texts.append(f.read_text(encoding='utf-8'))
+    combined = '\n'.join(ability_texts).lower()
+
+    # 获取实际成员目录
+    members_dir = team_dir / "members"
+    if not members_dir.exists():
+        return False, "❌ 缺少 members/ 目录，无法做语义覆盖检查"
+    member_names = [d.name.lower() for d in members_dir.iterdir() if d.is_dir()]
+
+    # 定义能力信号词 → 期望的成员名关键字
+    # 每项：(能力描述, [文档中可能出现的信号词], [成员名中应包含的词之一])
+    ability_signals = [
+        ("阅读/Reading", ['阅读', 'reading', 'r/w'],
+         ['reading', 'read']),
+        ("写作/Writing", ['写作', 'writing', 'task 1', 'task 2', '作文'],
+         ['writing', 'write', 'essay']),
+        ("听力/Listening", ['听力', 'listening', '精听', 'section'],
+         ['listening', 'listen']),
+        ("口语/Speaking", ['口语', 'speaking', 'part 1', 'part 2', 'part 3'],
+         ['speaking', 'speak']),
+    ]
+
+    gaps = []
+    covered = []
+    for ability_name, signals, member_keywords in ability_signals:
+        # 检查文档中是否出现这个能力的信号词
+        mentioned = any(s.lower() in combined for s in signals)
+        if not mentioned:
+            continue  # 文档没提到这个能力，跳过
+        # 检查是否有对应成员
+        has_member = any(
+            any(kw in mname for kw in member_keywords)
+            for mname in member_names
+        )
+        if has_member:
+            covered.append(ability_name)
+        else:
+            gaps.append(ability_name)
+
+    if gaps:
+        return False, (
+            f"❌ 语义覆盖缺口: 文档提到 {gaps}，但 members/ 下没有对应角色\n"
+            f"   已覆盖: {covered}"
+        )
+    if covered:
+        return True, f"语义覆盖完整: {covered} 均有对应成员 ✅"
+    return True, "语义覆盖检查：无特定能力信号词（跳过）"
+
+
+def check_routing_completeness(team_dir: Path) -> tuple[bool, str]:
+    """路由完整性检查：协调器路由中出现的意图，必须有对应成员或明确说明由谁处理。"""
+    coord = team_dir / "SKILL.md"
+    if not coord.exists():
+        return False, "❌ 缺少协调器 SKILL.md"
+
+    content = coord.read_text(encoding='utf-8')
+    members_dir = team_dir / "members"
+    if not members_dir.exists():
+        return True, "无 members/ 目录（跳过路由检查）"
+
+    member_names = [d.name.lower() for d in members_dir.iterdir() if d.is_dir()]
+
+    # 从路由表中提取「转发给」的角色名
+    routed_to = re.findall(r'转发给.*?([^\s|]+coach|[^\s|]+trainer|[^\s|]+师|[^\s|]+员|[^\s|]+官|[^\s|]+planner)',
+                           content)
+
+    # 检查「协调器自己处理」的情况下有没有对应工作流
+    self_handled = re.findall(r'协调器自己处理|协调器.*?处理', content)
+
+    issues = []
+    # 简单检查：路由表有几个意图，成员数量是否能覆盖
+    routing_rows = re.findall(r'\|[^|]+\|[^|]+\|[^|]+\|', content)
+    routing_count = len([r for r in routing_rows if '触发词' not in r and '意图' not in r and '用户意图' not in r])
+
+    if routing_count < len(member_names):
+        issues.append(f"路由项（{routing_count}个）少于成员数（{len(member_names)}个），可能有成员未被路由覆盖")
+
+    if issues:
+        return False, f"⚠️ 路由完整性问题: {'; '.join(issues)}"
+    return True, f"路由完整性: {routing_count}个路由意图，{len(member_names)}个成员 ✅"
+
+
 def check_team(team_dir: Path) -> None:
     """检查团队Skill"""
     print(f"团队检查: {team_dir.name}")
@@ -203,6 +297,8 @@ def check_team(team_dir: Path) -> None:
         ("长期记忆", lambda: check_shared_memory_files(team_dir)),
         ("成员知识库", lambda: check_member_references(team_dir)),
         ("弱点状态机", lambda: check_weak_points_state_machine(team_dir)),
+        ("语义覆盖", lambda: check_semantic_coverage(team_dir)),
+        ("路由完整性", lambda: check_routing_completeness(team_dir)),
     ]
 
     team_passed = 0

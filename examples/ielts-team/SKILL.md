@@ -1,24 +1,25 @@
 ---
 name: ielts-team
 description: |
-  雅思备考团队协调器。管理5个专业教练Skill的协同工作。
-  总目标：系统化雅思备考，实现目标分数。
-  成员：口语教练、写作教练、听力训练师、词汇监督、学习规划师。
+  雅思备考团队协调器。管理6个专业教练Skill的协同工作。
+  总目标：系统化雅思备考，实现目标分数（听说读写全科覆盖）。
+  成员：听力训练师、阅读教练、写作教练、口语教练、词汇监督、学习规划师。
   当用户提到「雅思」「IELTS」「备考」「考雅思」时使用。
-  即使用户只是说「帮我练口语」「写作怎么提高」「雅思听力」也应触发。
+  即使用户只是说「帮我练口语」「写作怎么提高」「阅读看不完」也应触发。
 ---
 
 # 雅思备考团队 · 协调中心
 
-> 五位专业教练，一个目标分数。
+> 六位专业教练，听说读写全覆盖，一个目标分数。
 
 ## 团队成员
 
 | 成员 | 职责 | 核心能力 | Skill位置 |
 |------|------|---------|----------|
-| 口语教练 | 口语模拟和评分 | 话题练习、评分、发音纠正、模板建议 | `members/speaking-coach/SKILL.md` |
-| 写作教练 | Task 1 & Task 2 评分和修改 | 接收作文、按官方标准评分、改写建议、范文 | `members/writing-coach/SKILL.md` |
 | 听力训练师 | 听力技巧和练习设计 | 场景分析、题型训练、薄弱点诊断、精听方法 | `members/listening-trainer/SKILL.md` |
+| **阅读教练** | **阅读题型训练和速度诊断** | **错题归因、题型策略、定位技巧、时间管理** | `members/reading-coach/SKILL.md` |
+| 写作教练 | Task 1 & Task 2 评分和修改 | 接收作文、按官方标准评分、改写建议、范文 | `members/writing-coach/SKILL.md` |
+| 口语教练 | 口语模拟和评分 | 话题练习、评分、发音纠正、话题素材 | `members/speaking-coach/SKILL.md` |
 | 词汇监督 | 词汇积累和复习 | 分话题词汇表、记忆计划、测试出题、搭配训练 | `members/vocabulary-supervisor/SKILL.md` |
 | 学习规划师 | 整体规划和进度管理 | 生成学习计划、调整优先级、模拟考安排 | `members/study-planner/SKILL.md` |
 
@@ -40,6 +41,7 @@ description: |
 | 写作教练 | 写作评分细则、题型、高分替换 | `members/writing-coach/references/writing-rubric.md` |
 | 口语教练 | 口语分数段特征、提分策略、话题策略 | `members/speaking-coach/references/speaking-rubric.md` |
 | 听力训练师 | 题型策略、信号词、精听方法 | `members/listening-trainer/references/listening-strategies.md` |
+| **阅读教练** | **题型策略、定位技巧、时间管理、错因分析** | `members/reading-coach/references/reading-strategies.md` |
 | 词汇监督 | 话题词汇分类、搭配、近义词辨析 | `members/vocabulary-supervisor/references/topic-vocabulary.md` |
 | 学习规划师 | 备考策略、时间分配、瓶颈识别 | `members/study-planner/references/planning-strategies.md` |
 
@@ -99,9 +101,10 @@ Step 3: 生成用户档案
 
 | 用户意图 | 转发给 | 触发词 |
 |---------|--------|-------|
-| 练口语、Part 1/2/3、口语话题 | 口语教练 | 口语、speaking、说、话题、part1/2/3 |
+| 练听力、听力技巧 | 听力训练师 | 听力、listening、听不懂、精听、Section |
+| 练阅读、阅读错题、看不完 | **阅读教练** | 阅读、reading、T/F/NG、配对、定位、看不完、时间不够 |
 | 改作文、写作练习、Task 1/2 | 写作教练 | 写作、writing、作文、大作文、小作文、task1/2 |
-| 练听力、听力技巧 | 听力训练师 | 听力、listening、听不懂、精听 |
+| 练口语、Part 1/2/3、口语话题 | 口语教练 | 口语、speaking、说、话题、part1/2/3 |
 | 背单词、词汇、搭配 | 词汇监督 | 单词、词汇、vocabulary、背、搭配 |
 | 制定计划、查看进度、调整安排 | 学习规划师 | 计划、进度、安排、schedule、报告 |
 | 模拟考、综合测试 | 协调器 → 多成员联合 | 模拟考、mock test、综合 |
@@ -132,7 +135,7 @@ Step 1: 确认模拟考范围
 
 Step 2: 按顺序执行
   → 听力：转发给听力训练师出题
-  → 阅读：协调器出阅读题（或提供模拟题来源建议）
+  → 阅读：转发给阅读教练出题并诊断
   → 写作：转发给写作教练出题并评分
   → 口语：转发给口语教练做模拟
 
