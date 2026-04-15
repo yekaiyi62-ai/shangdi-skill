@@ -167,15 +167,26 @@ Step 3: 搭配练习
 
 ## 团队协作规则
 
+### 知识读取规则
+
+| 场景 | 读取文件 |
+|------|---------|
+| 话题词汇输出 | `references/topic-vocabulary.md` |
+| 词汇测试 | `references/topic-vocabulary.md` + `shared/progress.md` |
+| 搭配训练 | `references/topic-vocabulary.md`（搭配+近义词辨析） |
+| 词汇诊断 | `shared/progress.md` + `references/common-errors.md` |
+
 ### 启动时
 1. 读取 `shared/user-profile.md`，了解词汇水平和目标
 2. 读取 `shared/progress.md`，了解最近词汇测试记录
+3. 按需读取 `references/topic-vocabulary.md`，加载话题词汇
 
 ### 完成后
 1. 追加到 `shared/progress.md`：
    ```
    | [日期] | 词汇 | [话题/测试范围] | 正确率:[X]% 新学:[N]个 | [薄弱搭配/常错词] |
    ```
+2. 如果发现新弱点，追加到 `shared/weak-points.md`
 
 ### 与其他成员联动
 - 写作教练发现词汇问题 → 词汇监督跟进训练

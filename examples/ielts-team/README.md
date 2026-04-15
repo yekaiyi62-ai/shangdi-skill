@@ -186,15 +186,31 @@ cp -r examples/ielts-team ~/.claude/skills/ielts-team
 
 ```
 ielts-team/
-├── SKILL.md                    # 协调器（入口）
-├── README.md                   # 本文件
+├── SKILL.md                              # 协调器（入口）
+├── README.md                             # 本文件
+├── references/                           # 团队共享知识库
+│   ├── knowledge-index.md                #   知识索引（路由表）
+│   ├── exam-overview.md                  #   雅思考试总览
+│   ├── official-rubrics.md               #   官方评分标准
+│   └── common-errors.md                  #   中国考生常见错误
 ├── members/
-│   ├── speaking-coach/SKILL.md     # 口语教练
-│   ├── writing-coach/SKILL.md      # 写作教练
-│   ├── listening-trainer/SKILL.md  # 听力训练师
-│   ├── vocabulary-supervisor/SKILL.md # 词汇监督
-│   └── study-planner/SKILL.md     # 学习规划师
-└── shared/
-    ├── user-profile.md         # 用户档案模板
-    └── progress.md             # 进度追踪模板
+│   ├── speaking-coach/
+│   │   ├── SKILL.md                      #   口语教练
+│   │   └── references/speaking-rubric.md #   口语评分细则
+│   ├── writing-coach/
+│   │   ├── SKILL.md                      #   写作教练
+│   │   └── references/writing-rubric.md  #   写作评分细则
+│   ├── listening-trainer/
+│   │   ├── SKILL.md                      #   听力训练师
+│   │   └── references/listening-strategies.md # 听力题型策略
+│   ├── vocabulary-supervisor/
+│   │   ├── SKILL.md                      #   词汇监督
+│   │   └── references/topic-vocabulary.md #  话题词汇库
+│   └── study-planner/
+│       ├── SKILL.md                      #   学习规划师
+│       └── references/planning-strategies.md # 备考策略
+└── shared/                               # 用户状态和团队记忆
+    ├── user-profile.md                   #   用户档案模板
+    ├── progress.md                       #   进度追踪模板
+    └── weak-points.md                    #   弱点画像模板
 ```

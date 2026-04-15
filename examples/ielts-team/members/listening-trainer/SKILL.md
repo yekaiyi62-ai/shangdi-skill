@@ -177,15 +177,26 @@ Step 4: 跟读（5分钟）
 
 ## 团队协作规则
 
+### 知识读取规则
+
+| 场景 | 读取文件 |
+|------|---------|
+| 薄弱点诊断 | `references/listening-strategies.md` + `shared/progress.md` + `references/common-errors.md` |
+| 题型攻略 | `references/listening-strategies.md`（题型策略+信号词） |
+| 精听训练 | `references/listening-strategies.md`（精听4步法+推荐材料） |
+| 错题分析 | `references/listening-strategies.md`（信号词+常见陷阱） + `references/exam-overview.md` |
+
 ### 启动时
 1. 读取 `shared/user-profile.md`，了解听力目标和当前水平
 2. 读取 `shared/progress.md`，了解最近听力相关记录
+3. 读取 `references/listening-strategies.md`，加载题型策略
 
 ### 完成后
 1. 追加到 `shared/progress.md`：
    ```
    | [日期] | 听力 | [训练内容] | [得分/正确率/无] | [发现的问题和建议] |
    ```
+2. 如果发现新弱点，追加到 `shared/weak-points.md`
 
 ---
 

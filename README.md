@@ -288,16 +288,25 @@ Phase 5  交付 → 安装 + 使用演示
        └─────────┘
 ```
 
-### 共享数据
+### 三层知识架构
 
-团队成员通过共享文件协作：
+团队Skill不只是一群角色，还有完整的知识库和记忆系统：
 
-| 文件 | 用途 |
-|------|------|
-| `shared/user-profile.md` | 用户基本信息、目标、当前水平 |
-| `shared/progress.md` | 各模块练习记录、得分趋势 |
+```
+团队共享知识库 (references/)
+  → 官方评分标准、考试总览、常见错误
+  → knowledge-index.md：知识路由表
 
-每个成员启动时读取共享数据了解用户情况，完成后更新练习记录。协调器负责汇总和生成综合报告。
+成员专属知识库 (members/[role]/references/)
+  → 写作评分细则、口语提分策略、听力题型策略...
+
+用户记忆库 (shared/)
+  → 用户档案、练习记录、弱点画像
+```
+
+每个成员启动时按知识读取规则加载对应知识，完成后更新用户状态。协调器根据知识索引按需分发。
+
+详细规范参见 `references/team-knowledge-architecture.md`。
 
 ---
 
@@ -309,26 +318,43 @@ shangdi/
 ├── README.md
 ├── references/
 │   ├── capability-matrix.md         # Skill能力矩阵参考
-│   └── team-patterns.md            # 团队编排模式参考
+│   ├── team-patterns.md             # 团队编排模式参考
+│   └── team-knowledge-architecture.md # 团队知识库三层架构规范
 ├── templates/
 │   ├── functional-skill.md          # 功能Skill模板
 │   ├── team-coordinator.md          # 团队协调器模板
 │   ├── person-skill.md              # 人物Skill模板
-│   └── codex-adapter.md            # Codex平台适配规则
+│   └── codex-adapter.md             # Codex平台适配规则
 ├── scripts/
-│   └── quality_check.py            # Skill质量检查工具
+│   └── quality_check.py             # Skill质量检查工具
 └── examples/
     └── ielts-team/                  # 示例：雅思备考团队
         ├── SKILL.md                 # 团队协调器（入口）
+        ├── references/              # 团队共享知识库
+        │   ├── knowledge-index.md   #   知识索引（路由表）
+        │   ├── exam-overview.md     #   考试总览
+        │   ├── official-rubrics.md  #   官方评分标准
+        │   └── common-errors.md     #   常见错误分类
         ├── members/
         │   ├── speaking-coach/      # 口语教练
+        │   │   ├── SKILL.md
+        │   │   └── references/      #   口语专属知识库
         │   ├── writing-coach/       # 写作教练
+        │   │   ├── SKILL.md
+        │   │   └── references/      #   写作专属知识库
         │   ├── listening-trainer/   # 听力训练师
+        │   │   ├── SKILL.md
+        │   │   └── references/      #   听力专属知识库
         │   ├── vocabulary-supervisor/ # 词汇监督
+        │   │   ├── SKILL.md
+        │   │   └── references/      #   词汇专属知识库
         │   └── study-planner/       # 学习规划师
-        └── shared/                  # 团队共享数据
-            ├── user-profile.md      # 用户档案模板
-            └── progress.md          # 进度追踪模板
+        │       ├── SKILL.md
+        │       └── references/      #   规划专属知识库
+        └── shared/                  # 用户状态和团队记忆
+            ├── user-profile.md      #   用户档案模板
+            ├── progress.md          #   进度追踪模板
+            └── weak-points.md       #   弱点画像模板
 ```
 
 ---

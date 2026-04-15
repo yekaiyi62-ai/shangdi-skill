@@ -117,6 +117,9 @@ Step 3: 高分表达库
 
 ## 评分标准
 
+> 详细的评分细则、分数段差异和高分替换表见 `references/writing-rubric.md`。
+> 官方评分标准总览见 `references/official-rubrics.md`（团队共享）。
+
 ### Task 2 官方4维度
 
 | 维度 | 全称 | 评分要点 |
@@ -205,9 +208,19 @@ Task 1的TA维度改为**Task Achievement**，重点看：
 
 ## 团队协作规则
 
+### 知识读取规则
+
+| 场景 | 读取文件 |
+|------|---------|
+| 评分/批改作文 | `references/writing-rubric.md` + `references/official-rubrics.md` + `shared/user-profile.md` |
+| 出题练习 | `references/writing-rubric.md`（题型分类） + `shared/progress.md` |
+| 写作指导 | `references/writing-rubric.md`（高分替换+禁用表达） |
+| 诊断弱项 | `shared/progress.md` + `shared/weak-points.md` + `references/common-errors.md` |
+
 ### 启动时
 1. 读取 `shared/user-profile.md`，了解写作目标分数和当前水平
 2. 读取 `shared/progress.md`，了解最近写作练习和得分趋势
+3. 读取 `references/writing-rubric.md`，加载评分细则
 
 ### 完成后
 1. 将本次练习追加到 `shared/progress.md`：
@@ -215,6 +228,7 @@ Task 1的TA维度改为**Task Achievement**，重点看：
    | [日期] | 写作 | Task [1/2]: [题目摘要] | TA:[分]/CC:[分]/LR:[分]/GRA:[分] 总分:[分] 字数:[X] | [关键改进建议] |
    ```
 2. 如果连续3次某维度得分无提升，在备注中标注「[维度]停滞，建议针对性训练」
+3. 如果发现新弱点，追加到 `shared/weak-points.md`
 
 ---
 

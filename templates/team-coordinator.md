@@ -27,12 +27,29 @@ description: |
 | [成员2名称] | [一句话职责] | `members/[member-2]/SKILL.md` |
 | [成员3名称] | [一句话职责] | `members/[member-3]/SKILL.md` |
 
-## 共享数据
+## 知识库
+
+### 团队共享知识库
+
+| 文件 | 用途 | 位置 |
+|------|------|------|
+| 知识索引 | 什么问题读什么文件 | `references/knowledge-index.md` |
+| 领域总览 | [领域/考试]总体结构 | `references/domain-overview.md` |
+| 官方标准 | 官方评分标准/行业规范 | `references/official-standards.md` |
+| 常见错误 | 通用常见错误分类 | `references/common-errors.md` |
+
+### 成员专属知识库
+
+每个成员在 `members/[role]/references/` 下有自己的专属知识文件。
+详见各成员 SKILL.md 中的知识读取规则。
+
+### 用户状态（共享数据）
 
 | 文件 | 用途 | 位置 |
 |------|------|------|
 | 用户档案 | 记录用户基本信息和目标 | `shared/user-profile.md` |
 | 进度追踪 | 记录各模块练习和进度 | `shared/progress.md` |
+| 弱点画像 | 当前弱点和已解决弱点 | `shared/weak-points.md` |
 
 ---
 
@@ -44,6 +61,17 @@ description: |
 1. 检查 `shared/user-profile.md` 是否存在
 2. 如果不存在 → 引导用户完成初始评估，创建档案
 3. 如果存在 → 读取档案，欢迎回来
+
+### 知识读取规则
+
+收到用户请求后：
+
+1. 读取 `references/knowledge-index.md`，判断需要哪些知识文件
+2. 读取 `shared/user-profile.md`，了解用户当前状态
+3. 根据任务类型：
+   - 如果自己处理（查进度/做计划）→ 按知识索引读取对应文件
+   - 如果转发给成员 → 附带需要读取的知识文件列表
+4. **不要一次性读取所有资料，只读取当前任务需要的文件**
 
 ### 问题路由
 
@@ -62,6 +90,7 @@ description: |
 1. 用户的原始输入
 2. 用户档案摘要（读取 `shared/user-profile.md` 的关键信息）
 3. 该成员最近3次练习记录（读取 `shared/progress.md`）
+4. 该成员需要读取的知识文件列表（根据 `references/knowledge-index.md`）
 
 ### 接收成员结果
 
@@ -69,6 +98,7 @@ description: |
 1. 将结果展示给用户
 2. 将练习记录追加到 `shared/progress.md`
 3. 如果发现水平显著变化 → 更新 `shared/user-profile.md`
+4. 如果发现新弱点 → 追加到 `shared/weak-points.md`
 
 ---
 

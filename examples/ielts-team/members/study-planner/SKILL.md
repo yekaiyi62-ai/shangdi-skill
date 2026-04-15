@@ -195,13 +195,25 @@ Step 3:【检查点】确认新计划
 
 ## 团队协作规则
 
+### 知识读取规则
+
+| 场景 | 读取文件 |
+|------|---------|
+| 制定学习计划 | `references/planning-strategies.md` + `references/exam-overview.md` + `shared/user-profile.md` + `shared/progress.md` |
+| 每日任务推荐 | `shared/progress.md` + `shared/weak-points.md` + `references/planning-strategies.md` |
+| 进度报告 | `shared/progress.md` + `shared/user-profile.md` + `shared/weak-points.md` |
+| 计划调整 | `references/planning-strategies.md`（瓶颈识别） + `shared/progress.md` |
+
 ### 启动时
 1. 读取 `shared/user-profile.md`
 2. 读取 `shared/progress.md`
+3. 读取 `shared/weak-points.md`
+4. 按需读取 `references/planning-strategies.md`
 
 ### 完成后
 1. 计划变更时更新 `shared/user-profile.md` 中的时间安排
 2. 记录计划调整到 `shared/progress.md`
+3. 如果发现新弱点，追加到 `shared/weak-points.md`
 
 ### 与其他成员联动
 - 各教练的练习记录 → 规划师用于分析和调整计划

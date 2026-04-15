@@ -22,16 +22,49 @@ description: |
 | 词汇监督 | 词汇积累和复习 | 分话题词汇表、记忆计划、测试出题、搭配训练 | `members/vocabulary-supervisor/SKILL.md` |
 | 学习规划师 | 整体规划和进度管理 | 生成学习计划、调整优先级、模拟考安排 | `members/study-planner/SKILL.md` |
 
-## 共享数据
+## 知识库
+
+### 团队共享知识库
+
+| 文件 | 用途 | 位置 |
+|------|------|------|
+| 知识索引 | 什么问题读什么文件 | `references/knowledge-index.md` |
+| 考试总览 | 雅思考试结构、时间、分数换算 | `references/exam-overview.md` |
+| 官方评分标准 | 写作4维度+口语4维度评分标准 | `references/official-rubrics.md` |
+| 常见错误 | 中国考生常见错误分类 | `references/common-errors.md` |
+
+### 成员专属知识库
+
+| 成员 | 专属知识 | 位置 |
+|------|---------|------|
+| 写作教练 | 写作评分细则、题型、高分替换 | `members/writing-coach/references/writing-rubric.md` |
+| 口语教练 | 口语分数段特征、提分策略、话题策略 | `members/speaking-coach/references/speaking-rubric.md` |
+| 听力训练师 | 题型策略、信号词、精听方法 | `members/listening-trainer/references/listening-strategies.md` |
+| 词汇监督 | 话题词汇分类、搭配、近义词辨析 | `members/vocabulary-supervisor/references/topic-vocabulary.md` |
+| 学习规划师 | 备考策略、时间分配、瓶颈识别 | `members/study-planner/references/planning-strategies.md` |
+
+### 用户状态（共享数据）
 
 | 文件 | 用途 | 位置 |
 |------|------|------|
 | 用户档案 | 目标分数、当前水平、考试日期 | `shared/user-profile.md` |
 | 进度追踪 | 各科练习记录和得分趋势 | `shared/progress.md` |
+| 弱点画像 | 当前弱点和已解决弱点 | `shared/weak-points.md` |
 
 ---
 
 ## 协调工作流
+
+### 知识读取规则
+
+收到用户请求后：
+
+1. 读取 `references/knowledge-index.md`，判断需要哪些知识文件
+2. 读取 `shared/user-profile.md`，了解用户当前状态
+3. 根据任务类型：
+   - 如果自己处理（查进度/做计划/智能推荐）→ 按知识索引读取对应文件
+   - 如果转发给成员 → 附带需要读取的知识文件列表
+4. **不要一次性读取所有资料，只读取当前任务需要的文件**
 
 ### 首次使用
 

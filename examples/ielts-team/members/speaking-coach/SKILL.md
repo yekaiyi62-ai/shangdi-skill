@@ -104,6 +104,9 @@ Step 3: 高分素材
 
 ## 评分标准
 
+> 详细的分数段特征、提分策略和Part 2话题策略见 `references/speaking-rubric.md`。
+> 官方评分标准总览见 `references/official-rubrics.md`（团队共享）。
+
 ### 雅思口语官方4维度评分
 
 | 维度 | 全称 | 评分要点 |
@@ -158,9 +161,19 @@ Step 3: 高分素材
 
 ## 团队协作规则
 
+### 知识读取规则
+
+| 场景 | 读取文件 |
+|------|---------|
+| 模拟练习/评分 | `references/speaking-rubric.md` + `references/official-rubrics.md` + `shared/user-profile.md` |
+| 回答优化 | `references/speaking-rubric.md`（提分策略+高分表达） |
+| 话题指导 | `references/speaking-rubric.md`（话题卡策略+万能串联） |
+| 诊断弱项 | `shared/progress.md` + `shared/weak-points.md` + `references/common-errors.md` |
+
 ### 启动时
 1. 读取 `shared/user-profile.md`，了解用户口语目标分数和当前水平
 2. 读取 `shared/progress.md`，了解最近口语练习情况
+3. 读取 `references/speaking-rubric.md`，加载评分细则
 
 ### 完成后
 1. 将本次练习结果追加到 `shared/progress.md`：
@@ -168,6 +181,7 @@ Step 3: 高分素材
    | [日期] | 口语 | Part [X]: [话题] | FC:[分]/LR:[分]/GRA:[分]/P:[分] 总分:[分] | [改进建议] |
    ```
 2. 如果发现水平有显著变化，更新 `shared/user-profile.md` 的口语水平
+3. 如果发现新弱点，追加到 `shared/weak-points.md`
 
 ---
 

@@ -75,13 +75,43 @@ Step 3: [步骤名称]
 
 ---
 
+## 知识读取规则
+
+> 当此Skill作为团队成员时，必须填写此节。独立Skill可省略。
+
+### 启动时必读
+
+1. `shared/user-profile.md` — 了解用户当前水平和目标
+2. `shared/progress.md` — 了解最近练习情况
+3. `members/[self]/references/[核心知识文件]` — 加载专属知识
+
+### 按场景读取
+
+| 场景 | 读取文件 |
+|------|---------|
+| [场景A] | `members/[self]/references/[xxx].md` + `references/official-standards.md` |
+| [场景B] | `members/[self]/references/[xxx].md` + `shared/progress.md` |
+| [场景C] | `references/domain-overview.md` + `shared/user-profile.md` |
+
+### 完成后写入
+
+1. 将本次结果追加到 `shared/progress.md`
+2. 如果发现水平显著变化 → 更新 `shared/user-profile.md`
+3. 如果发现新弱点 → 追加到 `shared/weak-points.md`
+
+---
+
 ## 领域知识
+
+> 独立Skill：直接在此处填写领域知识。
+> 团队成员Skill：核心知识放在 `references/` 目录下，此处放简要摘要和引用。
 
 ### [知识模块1]
 
 [从Phase 2调研中填充的专业知识。
 包括：评分标准、方法论、行业规范、最佳实践等。
-这里的内容必须是可操作的规则，不是泛泛的概述。]
+这里的内容必须是可操作的规则，不是泛泛的概述。
+团队成员模式下，详细知识存放在 `members/[self]/references/` 目录。]
 
 ### [知识模块2]
 
