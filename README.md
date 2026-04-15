@@ -203,20 +203,49 @@
 
 ## 安装
 
-### Claude Code
+### 推荐：Skills CLI
 
 ```bash
-# 克隆到本地
-git clone https://github.com/[your-repo]/shangdi.git
+# 安装到当前项目可用的 Agent（自动检测 Claude Code / Codex / Cursor / OpenCode 等）
+npx skills add yekaiyi62-ai/shangdi-skill --skill shangdi
 
-# 复制到 Claude Code skills 目录
-mkdir -p ~/.claude/skills/shangdi
-cp -r shangdi/* ~/.claude/skills/shangdi/
+# 只安装到 Claude Code
+npx skills add yekaiyi62-ai/shangdi-skill --skill shangdi -a claude-code
+
+# 只安装到 Codex
+npx skills add yekaiyi62-ai/shangdi-skill --skill shangdi -a codex
+
+# 全局安装，所有项目都可用
+npx skills add yekaiyi62-ai/shangdi-skill --skill shangdi -g
 ```
+
+安装后重启对应的 Agent，让它重新加载 Skill。
+
+> 这个仓库根目录就是一个完整 Skill，核心文件是 `SKILL.md`，Skill 名称是 `shangdi`。因为仓库里还包含示例团队，推荐显式加上 `--skill shangdi`，只安装上帝元 Skill。
+>
+> 安装时会把整个项目作为 Skill 包安装；Agent 识别和触发的入口是 `SKILL.md` 的 frontmatter。`references/`、`templates/`、`scripts/`、`examples/` 里的其他文件会作为随包资源保留，只有当 `SKILL.md` 指示需要读取时才按需加载，不是一次性把所有 `.md` 都塞进上下文。
+
+### 手动安装
+
+如果你的环境不能使用 `npx`，可以手动复制：
+
+```bash
+git clone https://github.com/yekaiyi62-ai/shangdi-skill.git
+
+# Claude Code
+mkdir -p ~/.claude/skills/shangdi
+cp -r shangdi-skill/* ~/.claude/skills/shangdi/
+
+# Codex
+mkdir -p ~/.codex/skills/shangdi
+cp -r shangdi-skill/* ~/.codex/skills/shangdi/
+```
+
+手动安装后同样需要重启对应的 Agent。
 
 ### 使用
 
-在 Claude Code 中直接说：
+在 Claude Code / Codex 中直接说：
 
 ```
 > 帮我做一个代码审查助手          → 生成单个功能Skill
@@ -228,10 +257,13 @@ cp -r shangdi/* ~/.claude/skills/shangdi/
 ### 使用已有的雅思团队示例
 
 ```bash
-# 直接安装雅思团队示例
-cp -r shangdi/examples/ielts-team ~/.claude/skills/ielts-team
+# 从本仓库复制雅思团队示例到 Claude Code
+cp -r shangdi-skill/examples/ielts-team ~/.claude/skills/ielts-team
 
-# 然后在 Claude Code 中说
+# 或复制到 Codex
+cp -r shangdi-skill/examples/ielts-team ~/.codex/skills/ielts-team
+
+# 然后在 Agent 中说
 > 帮我练雅思口语
 > 改一下这篇作文
 > 今天练什么
@@ -395,7 +427,7 @@ python3 scripts/quality_check.py path/to/team-dir --team
 - [x] 雅思备考团队示例
 - [x] 质量检查工具
 - [ ] 更多示例：产品团队、代码审查、内容创作
-- [ ] `npx skills add` 一键安装支持
+- [x] `npx skills add` 一键安装支持
 - [ ] 团队Skill的Web UI进度面板
 - [ ] 团队成员之间的自动触发联动
 
