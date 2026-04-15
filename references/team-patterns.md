@@ -57,7 +57,7 @@
 
 ## 二、知识库设计
 
-> 详细的三层知识架构规范参见 `references/team-knowledge-architecture.md`。
+> 详细的四层团队架构规范参见 `references/team-knowledge-architecture.md`。
 
 ### 三层架构概览
 

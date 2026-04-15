@@ -1,17 +1,27 @@
 # 雅思备考团队 · 示例
 
-> 5个专业教练 + 1个协调器 + 共享进度追踪
+> 6个专业教练 + 1个协调器 + 能力覆盖账本 + 团队契约 + 共享长期记忆
 
 ## 团队成员
 
 | 教练 | 核心能力 | 输入 → 输出 |
 |------|---------|------------|
-| **口语教练** | Part 1/2/3模拟、4维度评分 | 话题回答 → 评分卡 + 改进建议 + 高分替换 |
-| **写作教练** | Task 1/2评分、逐句修改 | 作文文本 → 评分卡 + diff修改 + 范文 |
 | **听力训练师** | 题型攻略、精听方案 | 薄弱描述 → 诊断 + 训练方案 + 材料推荐 |
+| **阅读教练** | 题型诊断、定位技巧、时间管理 | 错题/速度问题 → 错因归类 + 解题策略 + 训练计划 |
+| **写作教练** | Task 1/2评分、逐句修改 | 作文文本 → 评分卡 + diff修改 + 范文 |
+| **口语教练** | Part 1/2/3模拟、4维度评分 | 话题回答 → 评分卡 + 改进建议 + 高分替换 |
 | **词汇监督** | 话题词汇、搭配训练、测试 | 话题/请求 → 词汇表 / 测试题 / 深度卡 |
 | **学习规划师** | 制定计划、追踪进度 | 目标+时间 → 阶段化计划 + 每日任务 |
 | **协调器** | 分发任务、汇总报告 | 任意输入 → 转给对应教练 / 综合报告 |
+
+## 团队控制面
+
+这个团队不只靠 README 描述结构，而是有两份可被质量检查脚本读取的结构账本：
+
+| 文件 | 用途 |
+|------|------|
+| `references/capability-coverage.md` | 记录 Listening / Reading / Writing / Speaking 等能力是否都有负责人、知识文件和记忆目标 |
+| `references/team-contract.md` | 记录角色责任、路由契约、记忆写入契约和冲突处理规则 |
 
 ## 效果示例对话
 
@@ -189,6 +199,8 @@ ielts-team/
 ├── SKILL.md                              # 协调器（入口）
 ├── README.md                             # 本文件
 ├── references/                           # 团队共享知识库
+│   ├── capability-coverage.md            #   能力覆盖账本
+│   ├── team-contract.md                  #   团队契约
 │   ├── knowledge-index.md                #   知识索引（路由表）
 │   ├── exam-overview.md                  #   雅思考试总览
 │   ├── official-rubrics.md               #   官方评分标准
@@ -203,6 +215,9 @@ ielts-team/
 │   ├── listening-trainer/
 │   │   ├── SKILL.md                      #   听力训练师
 │   │   └── references/listening-strategies.md # 听力题型策略
+│   ├── reading-coach/
+│   │   ├── SKILL.md                      #   阅读教练
+│   │   └── references/reading-strategies.md # 阅读题型策略
 │   ├── vocabulary-supervisor/
 │   │   ├── SKILL.md                      #   词汇监督
 │   │   └── references/topic-vocabulary.md #  话题词汇库
@@ -212,5 +227,9 @@ ielts-team/
 └── shared/                               # 用户状态和团队记忆
     ├── user-profile.md                   #   用户档案模板
     ├── progress.md                       #   进度追踪模板
-    └── weak-points.md                    #   弱点画像模板
+    ├── weak-points.md                    #   弱点画像模板
+    ├── session-log.md                    #   最近7天会话摘要
+    ├── weekly-reviews.md                 #   周复盘
+    ├── monthly-summary.md                #   月度总结
+    └── archive/                          #   历史归档
 ```

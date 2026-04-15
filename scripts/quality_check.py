@@ -54,7 +54,11 @@ def check_checkpoints(content: str) -> tuple[bool, str]:
 
 def check_output_format(content: str) -> tuple[bool, str]:
     """检查是否有输出格式规范"""
-    has_format = bool(re.search(r'输出格式|格式规范|报告格式|模板|format', content, re.IGNORECASE))
+    has_format = bool(re.search(
+        r'输出格式|格式规范|报告格式|模板|format|综合报告|进度报告|周复盘报告|月度总结|[═┌┬┐└┴┘]',
+        content,
+        re.IGNORECASE
+    ))
     return has_format, "有输出格式规范 ✅" if has_format else "❌ 未找到输出格式规范"
 
 
@@ -191,12 +195,127 @@ def check_file_paths_in_skill(content: str, skill_dir: Path, member_dir=None) ->
     return True, f"文件引用验证: {len(checked)}个路径全部存在 ✅"
 
 
-def check_semantic_coverage(team_dir: Path) -> tuple[bool, str]:
-    """语义覆盖检查：协调器/knowledge-index/progress中提到的核心模块，是否都有对应成员。
+def parse_markdown_table(content: str) -> list[dict[str, str]]:
+    """Parse simple markdown tables into row dictionaries."""
+    rows = []
+    lines = [line.strip() for line in content.splitlines() if line.strip().startswith('|')]
+    if len(lines) < 2:
+        return rows
 
-    从协调器SKILL.md和knowledge-index.md中提取核心能力词，
-    然后检查members/下是否有对应角色目录。
-    """
+    i = 0
+    while i < len(lines) - 1:
+        header = [cell.strip() for cell in lines[i].strip('|').split('|')]
+        separator = lines[i + 1]
+        is_separator = all(re.fullmatch(r':?-{3,}:?', cell.strip()) for cell in separator.strip('|').split('|'))
+        if not is_separator:
+            i += 1
+            continue
+        j = i + 2
+        while j < len(lines):
+            cells = [cell.strip() for cell in lines[j].strip('|').split('|')]
+            if len(cells) != len(header):
+                break
+            rows.append(dict(zip(header, cells)))
+            j += 1
+        i = j
+    return rows
+
+
+def extract_md_paths(value: str) -> list[str]:
+    """Extract markdown paths from a table cell."""
+    return re.findall(r'`([^`]+\.md)`', value)
+
+
+def check_team_contract(team_dir: Path) -> tuple[bool, str]:
+    """检查团队契约是否存在并包含关键section。"""
+    contract = team_dir / "references" / "team-contract.md"
+    if not contract.exists():
+        return False, "❌ 缺少 references/team-contract.md"
+    content = contract.read_text(encoding='utf-8')
+    required_sections = ["角色责任", "路由契约", "记忆写入契约"]
+    missing = [s for s in required_sections if s not in content]
+    if missing:
+        return False, f"❌ team-contract.md 缺少section: {', '.join(missing)}"
+    return True, "team-contract.md 存在且包含角色/路由/记忆契约 ✅"
+
+
+def check_capability_coverage_file(team_dir: Path) -> tuple[bool, str]:
+    """检查能力覆盖账本：必备能力必须有负责人、成员路径、知识文件和记忆目标。"""
+    coverage = team_dir / "references" / "capability-coverage.md"
+    if not coverage.exists():
+        return False, "❌ 缺少 references/capability-coverage.md"
+
+    content = coverage.read_text(encoding='utf-8')
+    rows = parse_markdown_table(content)
+    capability_rows = [
+        row for row in rows
+        if any(k in row for k in ["能力模块", "能力", "Capability"])
+    ]
+    if not capability_rows:
+        return False, "❌ capability-coverage.md 缺少能力覆盖表"
+
+    issues = []
+    required_count = 0
+    covered_count = 0
+
+    for idx, row in enumerate(capability_rows, start=1):
+        capability = row.get("能力模块") or row.get("能力") or row.get("Capability") or f"第{idx}行"
+        level = row.get("必备/辅助") or row.get("类型") or row.get("Required") or ""
+        status = row.get("状态") or row.get("覆盖状态") or row.get("Status") or ""
+        is_required = "必备" in level or "required" in level.lower()
+        user_excluded = "用户排除" in status or "excluded" in status.lower()
+
+        if not is_required or user_excluded:
+            continue
+
+        required_count += 1
+        owner = row.get("负责人") or row.get("负责角色") or row.get("Owner") or ""
+        member_path = row.get("成员路径") or row.get("成员目录") or row.get("Member Path") or ""
+        knowledge_cell = row.get("知识文件") or row.get("Knowledge") or ""
+        memory_cell = row.get("记忆目标") or row.get("记忆字段") or row.get("Memory") or ""
+
+        if not owner or owner in {"—", "-", "无"}:
+            issues.append(f"{capability}: 缺少负责人")
+
+        member_paths = re.findall(r'`([^`]+)`', member_path)
+        if not member_paths:
+            issues.append(f"{capability}: 缺少成员路径")
+        else:
+            for path in member_paths:
+                target = team_dir / path.rstrip("/")
+                if not target.exists():
+                    issues.append(f"{capability}: 成员路径不存在 {path}")
+
+        knowledge_paths = extract_md_paths(knowledge_cell)
+        if not knowledge_paths:
+            issues.append(f"{capability}: 缺少知识文件")
+        else:
+            for path in knowledge_paths:
+                if not (team_dir / path).exists():
+                    issues.append(f"{capability}: 知识文件不存在 {path}")
+
+        memory_paths = extract_md_paths(memory_cell)
+        if not memory_cell or memory_cell in {"—", "-", "无"}:
+            issues.append(f"{capability}: 缺少记忆目标")
+        for path in memory_paths:
+            if path.startswith("shared/") and not (team_dir / path).exists():
+                issues.append(f"{capability}: 记忆文件不存在 {path}")
+
+        if not any(issue.startswith(f"{capability}:") for issue in issues):
+            covered_count += 1
+
+    if issues:
+        return False, f"❌ 能力覆盖问题: {'; '.join(issues[:6])}"
+    return True, f"能力覆盖账本: {covered_count}/{required_count}个必备能力闭环 ✅"
+
+
+def check_semantic_coverage(team_dir: Path) -> tuple[bool, str]:
+    """语义覆盖检查：优先读取 capability-coverage.md；缺失时退回关键词检查。"""
+    coverage = team_dir / "references" / "capability-coverage.md"
+    if coverage.exists():
+        return check_capability_coverage_file(team_dir)
+
+    # 兼容旧团队：没有能力账本时，退回雅思示例的关键词检查。
     # 从协调器和知识索引中提取关键能力词
     ability_texts = []
     coord = team_dir / "SKILL.md"
@@ -253,36 +372,32 @@ def check_semantic_coverage(team_dir: Path) -> tuple[bool, str]:
 
 
 def check_routing_completeness(team_dir: Path) -> tuple[bool, str]:
-    """路由完整性检查：协调器路由中出现的意图，必须有对应成员或明确说明由谁处理。"""
+    """路由完整性检查：每个成员应被协调器或team-contract引用。"""
     coord = team_dir / "SKILL.md"
     if not coord.exists():
         return False, "❌ 缺少协调器 SKILL.md"
 
-    content = coord.read_text(encoding='utf-8')
+    content_parts = [coord.read_text(encoding='utf-8')]
+    contract = team_dir / "references" / "team-contract.md"
+    if contract.exists():
+        content_parts.append(contract.read_text(encoding='utf-8'))
+    content = "\n".join(content_parts).lower()
+
     members_dir = team_dir / "members"
     if not members_dir.exists():
         return True, "无 members/ 目录（跳过路由检查）"
 
     member_names = [d.name.lower() for d in members_dir.iterdir() if d.is_dir()]
+    missing = []
+    for member in member_names:
+        tokens = {member, member.replace("-", " ")}
+        tokens.update(part for part in member.split("-") if len(part) >= 4)
+        if not any(token in content for token in tokens):
+            missing.append(member)
 
-    # 从路由表中提取「转发给」的角色名
-    routed_to = re.findall(r'转发给.*?([^\s|]+coach|[^\s|]+trainer|[^\s|]+师|[^\s|]+员|[^\s|]+官|[^\s|]+planner)',
-                           content)
-
-    # 检查「协调器自己处理」的情况下有没有对应工作流
-    self_handled = re.findall(r'协调器自己处理|协调器.*?处理', content)
-
-    issues = []
-    # 简单检查：路由表有几个意图，成员数量是否能覆盖
-    routing_rows = re.findall(r'\|[^|]+\|[^|]+\|[^|]+\|', content)
-    routing_count = len([r for r in routing_rows if '触发词' not in r and '意图' not in r and '用户意图' not in r])
-
-    if routing_count < len(member_names):
-        issues.append(f"路由项（{routing_count}个）少于成员数（{len(member_names)}个），可能有成员未被路由覆盖")
-
-    if issues:
-        return False, f"⚠️ 路由完整性问题: {'; '.join(issues)}"
-    return True, f"路由完整性: {routing_count}个路由意图，{len(member_names)}个成员 ✅"
+    if missing:
+        return False, f"⚠️ 未在协调器/team-contract中发现成员路由引用: {', '.join(missing)}"
+    return True, f"路由完整性: {len(member_names)}个成员均被路由或契约引用 ✅"
 
 
 def check_team(team_dir: Path) -> None:
@@ -293,6 +408,8 @@ def check_team(team_dir: Path) -> None:
     # === 团队级检查 ===
     print("\n🏗️  团队结构检查:")
     team_checks = [
+        ("能力账本", lambda: check_capability_coverage_file(team_dir)),
+        ("团队契约", lambda: check_team_contract(team_dir)),
         ("知识索引", lambda: check_knowledge_index(team_dir)),
         ("长期记忆", lambda: check_shared_memory_files(team_dir)),
         ("成员知识库", lambda: check_member_references(team_dir)),

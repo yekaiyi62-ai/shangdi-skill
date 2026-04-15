@@ -100,13 +100,13 @@ description: |
 - 7-10个Skill：考虑分组，每组一个子协调器
 - **>10个：不推荐**，复杂度爆炸，拆分为多个独立团队
 
-用户确认角色设计后 → **Phase 0.8**（能力覆盖检查）。
+生成角色草案后 → **Phase 0.8**（能力覆盖检查）→ **Phase 0.9**（团队契约设计）→ 展示给用户确认。
 
 ---
 
-### Phase 0.8: 能力覆盖检查
+### Phase 0.8: 能力覆盖检查（Capability Coverage）
 
-**在推荐团队结构前，必须先检查核心能力是否有角色承接。**
+**在确认团队结构前，必须先检查核心能力是否有角色承接，并把检查结果写成团队的能力账本。**
 
 这是防止「雅思团队没有阅读教练」这类问题的关键检查点。
 
@@ -120,14 +120,35 @@ Step 1: 根据领域类型和用户目标，列出该领域的必备能力模块
 
 Step 2: 对照已设计的角色，检查每个必备模块是否有角色承接
 
-Step 3: 生成能力覆盖清单：
+Step 3: 生成能力覆盖账本：
 ```
 
-| 能力模块 | 必备/辅助 | 负责角色 | 覆盖状态 |
-|---------|----------|---------|---------|
-| [模块1] | 必备 | [角色名] | ✅ 已覆盖 |
-| [模块2] | 必备 | — | ❌ 缺失，需新增 |
-| [模块3] | 辅助 | [角色名] | ✅ 已覆盖 |
+| 能力模块 | 必备/辅助 | 负责人 | 成员路径 | 知识文件 | 记忆字段 | 覆盖状态 |
+|---------|----------|--------|---------|----------|----------|----------|
+| [模块1] | 必备 | [角色名] | `members/[role]/` | `members/[role]/references/[x].md` | `shared/[x]` | 已覆盖 |
+| [模块2] | 必备 | — | — | — | — | 缺失，需新增 |
+| [模块3] | 辅助 | [角色名] | `members/[role]/` | `references/[x].md` | `shared/[x]` | 已覆盖 |
+
+#### 必须落盘
+
+团队构建时必须生成：
+
+```text
+references/capability-coverage.md
+```
+
+这个文件是团队完整性的**单一事实源**。质量检查脚本优先读取它，而不是靠关键词猜测。
+
+`capability-coverage.md` 必须包含：
+- 每个必备能力模块
+- 是否必备
+- 负责人
+- 成员目录
+- 对应知识文件
+- 对应长期记忆字段或文件
+- 覆盖状态
+
+如果团队是一次性任务，也要写明哪些能力不需要长期记忆，以及原因。
 
 #### 停止条件
 
@@ -149,7 +170,44 @@ Step 3: 生成能力覆盖清单：
 
 **不得静默跳过必备能力缺失，不得让辅助角色替代核心角色（除非用户明确同意）。**
 
-**覆盖检查通过后 → Phase 1（对每个角色执行能力设计）。**
+**覆盖检查通过后 → Phase 0.9（团队契约设计）。**
+
+---
+
+### Phase 0.9: 团队契约设计（Team Contract）
+
+团队不是一群角色列表，而是一套协作契约。进入能力设计前，必须定义三份契约：
+
+| 契约 | 解决的问题 | 输出位置 |
+|------|-----------|----------|
+| 能力覆盖契约 | 哪些核心能力必须存在，由谁负责 | `references/capability-coverage.md` |
+| 角色协作契约 | 谁接收什么输入，输出给谁，何时交接 | `references/team-contract.md` |
+| 记忆写入契约 | 每个角色完成任务后写哪些 shared 文件 | `references/team-contract.md` |
+
+#### team-contract.md 必须包含
+
+```markdown
+# Team Contract
+
+## 角色责任
+| 角色 | 负责能力 | 输入 | 输出 | 上游 | 下游 |
+|------|----------|------|------|------|------|
+
+## 路由契约
+| 用户意图 | 负责人 | 必读知识 | 必读记忆 | 输出 |
+|---------|--------|----------|----------|------|
+
+## 记忆写入契约
+| 角色 | 任务完成后必须写入 | 条件写入 | 禁止写入 |
+|------|------------------|----------|----------|
+
+## 冲突处理
+- 静态知识库 `references/` 和 `members/*/references/` 不在日常使用中改写。
+- 用户状态只写入 `shared/`。
+- 多角色对同一弱点判断不一致时，协调器保留分歧，周复盘时裁决。
+```
+
+**完成 Phase 0.9 后，才展示团队方案给用户确认。**
 
 ---
 
@@ -212,8 +270,8 @@ Step 3: 生成能力覆盖清单：
 用户：全面提升，目标7分，还有2个月
 
 上帝：明白了，你需要的是一个完整的备考团队而非单个助手。
-我推荐生成一个雅思备考团队：5个教练 + 协调器，
-口语/写作/听力/词汇/规划各一个，共享进度追踪。
+我推荐生成一个雅思备考团队：6个教练 + 协调器，
+听力/阅读/写作/口语/词汇/规划各一个，共享进度追踪。
 要开始造吗？
 ```
 
@@ -309,6 +367,26 @@ domain_knowledge:
 ```yaml
 team:
   coordinator: [总调度Skill名称]
+  capability_coverage:
+    file: references/capability-coverage.md
+    required_capabilities:
+      - name: [必备能力]
+        owner: [role-name]
+        member_path: members/[role-name]/
+        knowledge_files:
+          - members/[role-name]/references/[file].md
+        memory_targets:
+          - shared/[file-or-field].md
+  contract:
+    file: references/team-contract.md
+    routing_owner: [coordinator]
+    memory_writer:
+      [role-name]:
+        always_write:
+          - shared/session-log.md
+        conditional_write:
+          - shared/progress.md
+          - shared/weak-points.md
   shared_data:
     location: [共享数据目录]
     files:
@@ -320,7 +398,18 @@ team:
     - handoff: [角色之间如何交接]
 ```
 
-**展示能力矩阵给用户确认** → 确认后进入Phase 2。
+#### 1.4 团队设计检查
+
+展示给用户确认前，必须给出四张表：
+
+1. **角色表**：有哪些成员，各自负责什么。
+2. **能力覆盖表**：每个必备能力是否有负责人。
+3. **知识生成表**：每个能力对应哪些共享/专属知识文件。
+4. **记忆写入表**：每个角色完成任务后写哪些 shared 文件。
+
+如果只展示角色表，不展示知识和记忆契约，视为团队设计未完成。
+
+**展示能力矩阵 + 团队契约摘要给用户确认** → 确认后进入Phase 2。
 
 ---
 
@@ -522,7 +611,7 @@ Step 1 → Step 2 → ... → 输出
 
 #### 3.4 团队Skill的额外构建
 
-> 详细的三层知识架构规范参见 `references/team-knowledge-architecture.md`。
+> 详细的四层团队架构规范参见 `references/team-knowledge-architecture.md`。
 
 **团队 = 角色 + 专属知识库 + 团队共享知识库 + 长期记忆系统 + 周/月复盘 + 按需读取规则 + 质量检查**
 
@@ -530,6 +619,8 @@ Step 1 → Step 2 → ... → 输出
 2. 生成团队协调器的SKILL.md（含知识路由和分发规则）
 3. **生成团队共享知识库**：
    - `references/knowledge-index.md` — 知识索引（什么问题读什么文件）
+   - `references/capability-coverage.md` — 能力覆盖账本（每个必备能力由谁负责）
+   - `references/team-contract.md` — 团队契约（角色责任、路由、记忆写入、冲突处理）
    - `references/domain-overview.md` — 领域/考试总体结构
    - `references/official-standards.md` — 官方评分标准/行业规范
    - `references/common-errors.md` — 通用常见错误分类
@@ -550,6 +641,7 @@ Step 1 → Step 2 → ... → 输出
    - 通用文件（session-log、weekly-reviews、monthly-summary、archive）所有领域必须有
 7. 生成团队README说明使用方式
 8. **每个成员Skill中写入知识读取规则和团队协作规则**（含 session-log 写入和弱点状态更新）
+9. **回填团队契约**：确保 `SKILL.md`、`knowledge-index.md`、`capability-coverage.md`、`team-contract.md`、members 目录互相一致。
 
 #### 3.4.1 知识分层规则
 
@@ -602,6 +694,8 @@ Codex适配规则参见 `templates/codex-adapter.md`。
 ├── README.md                             # 团队使用说明
 ├── references/                           # 团队共享知识库
 │   ├── knowledge-index.md                # 知识索引（知识路由表）
+│   ├── capability-coverage.md            # 能力覆盖账本（必备能力→负责人→知识→记忆）
+│   ├── team-contract.md                  # 团队契约（角色责任、路由、记忆写入）
 │   ├── domain-overview.md                # 领域/考试总体结构
 │   ├── official-standards.md             # 官方评分标准/行业规范
 │   ├── common-errors.md                  # 通用常见错误分类
@@ -634,6 +728,7 @@ Codex适配规则参见 `templates/codex-adapter.md`。
 - 每个调研Agent必须把结果写入 `references/research/`
 - **所有文件必须存在skill目录内部**，Skill必须是自包含的——复制整个目录就能独立使用
 - 不存文件的调研等于没做
+- 不生成 `references/capability-coverage.md` 和 `references/team-contract.md` 的团队，视为未完成团队，而不是可交付团队
 
 ---
 

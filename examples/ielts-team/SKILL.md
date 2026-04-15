@@ -29,6 +29,8 @@ description: |
 
 | 文件 | 用途 | 位置 |
 |------|------|------|
+| 能力覆盖账本 | 听说读写等核心能力是否都有负责人、知识和记忆承接 | `references/capability-coverage.md` |
+| 团队契约 | 角色责任、路由、记忆写入和冲突处理规则 | `references/team-contract.md` |
 | 知识索引 | 什么问题读什么文件 | `references/knowledge-index.md` |
 | 考试总览 | 雅思考试结构、时间、分数换算 | `references/exam-overview.md` |
 | 官方评分标准 | 写作4维度+口语4维度评分标准 | `references/official-rubrics.md` |
@@ -65,12 +67,14 @@ description: |
 
 收到用户请求后：
 
-1. 读取 `references/knowledge-index.md`，判断需要哪些知识文件
-2. 读取 `shared/user-profile.md`，了解用户当前状态
-3. 根据任务类型：
+1. 读取 `references/capability-coverage.md`，确认请求涉及的能力由谁负责
+2. 读取 `references/team-contract.md`，确认路由和记忆写入责任
+3. 读取 `references/knowledge-index.md`，判断需要哪些知识文件
+4. 读取 `shared/user-profile.md`，了解用户当前状态
+5. 根据任务类型：
    - 如果自己处理（查进度/做计划/智能推荐）→ 按知识索引读取对应文件
    - 如果转发给成员 → 附带需要读取的知识文件列表
-4. **不要一次性读取所有资料，只读取当前任务需要的文件**
+6. **不要一次性读取所有资料，只读取当前任务需要的文件**
 
 ### 首次使用
 
